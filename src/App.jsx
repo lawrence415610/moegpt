@@ -1,10 +1,9 @@
-import './App.css'
+import './App.css';
+import Router from './routes';
 
 function App() {
   return (
-    <h1 className='text-center text-red-500 w-full'>
-      Hello World!
-    </h1>
+    <Router />
   )
 }
 
