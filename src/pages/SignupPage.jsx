@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const LoginPage = () => {
+const SignupPage = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [confirmPassword, setConfirmPassword] = useState('');
 	const [emailError, setEmailError] = useState(null);
 	const [passwordError, setPasswordError] = useState(null);
+	const [confirmPasswordError, setConfirmPasswordError] = useState(null);
 	const [isDisabled, setIsDisabled] = useState(true);
+
 	const emailRegex = /^[a-zA-Z0-6._%+-]+@[a-zA-Z0-6.-]+\.[a-zA-Z]{2,}$/;
 	const passwordRegex = /^(?=.*[a-z])(?=.*\d).{8,}$/;
 
@@ -30,6 +33,16 @@ const LoginPage = () => {
 		}
 	};
 
+	const confirmPasswordHandler = (e) => {
+		const input = e.target.value;
+		setConfirmPassword(input);
+		if (input !== password) {
+			setConfirmPasswordError('Password must match!');
+		} else {
+			setConfirmPasswordError(null);
+		}
+	};
+
 	const submitHandler = (e) => {
 		e.preventDefault();
 		if (isDisabled) return;
@@ -40,17 +53,17 @@ const LoginPage = () => {
 	};
 
 	useEffect(() => {
-		if (emailError || passwordError) {
+		if (emailError || passwordError || confirmPasswordError) {
 			setIsDisabled(true);
 		} else {
 			setIsDisabled(false);
 		}
-	}, [emailError, passwordError]);
+	}, [emailError, passwordError, confirmPasswordError]);
 
 	return (
 		<main className="flex items-center justify-center bg-dark-blue h-screen body-font">
 			<div className="max-w-lg rounded-md bg-slate-100 w-full p-10">
-				<h1 className="big-title-font select-none mb-10">Log in</h1>
+				<h1 className="big-title-font select-none mb-10">Sign up</h1>
 				<form onSubmit={submitHandler} className="flex flex-col justify-start gap-8">
 					<div className="flex justify-around items-center">
 						<label className="min-w-16" htmlFor="email">
@@ -89,6 +102,27 @@ const LoginPage = () => {
 							</p>
 						</div>
 					</div>
+					<div className="flex justify-around items-center">
+						<label className="min-w-16" htmlFor="password">
+							Confirm
+						</label>
+						<div>
+							<input
+								className={`input-field ${
+									confirmPasswordError
+										? 'focus:border-red-500 border-red-500'
+										: ''
+								}`}
+								onChange={confirmPasswordHandler}
+								value={confirmPassword}
+								type="password"
+								id="confirmpassword"
+							/>
+							<p className="text-red-500 text-xs mt-2 max-w-56">
+								{!!confirmPasswordError && confirmPasswordError}
+							</p>
+						</div>
+					</div>
 					<button
 						className={`primary-btn w-32 self-center ${
 							isDisabled ? 'bg-stone-400 hover:bg-stone-400 cursor-not-allowed' : ''
@@ -96,13 +130,13 @@ const LoginPage = () => {
 						disabled={isDisabled}
 						type="submit"
 					>
-						Log in
+						Sign up
 					</button>
 				</form>
 				<p className="text-center mt-3">
 					Don&apos;t have an account? Please{' '}
-					<Link to="/signup" className="text-emerald-500 hover:underline">
-						Sign up
+					<Link to="/login" className="text-emerald-500 hover:underline">
+						Log in
 					</Link>
 				</p>
 			</div>
@@ -110,4 +144,4 @@ const LoginPage = () => {
 	);
 };
 
-export default LoginPage;
+export default SignupPage;
