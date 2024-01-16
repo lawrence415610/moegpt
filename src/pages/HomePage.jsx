@@ -1,11 +1,15 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Logo from '../assets/logo.png';
 
 const HomePage = () => {
+	const maxTextAreaHeight = 200;
+	const textAreaRef = useRef(null);
 	const [inputText, setInputText] = useState('');
+	const [isTextAreaOverflow, setIsTextAreaOverflow] = useState(false);
 
 	const changeHandler = (e) => {
 		setInputText(e.target.value);
+		setIsTextAreaOverflow(e.target.scrollHeight > maxTextAreaHeight);
 	};
 
 	const submitHandler = (e) => {
@@ -15,6 +19,14 @@ const HomePage = () => {
 			inputText,
 		});
 	};
+
+	useEffect(() => {
+		if (textAreaRef) {
+			textAreaRef.current.style.height = '0px';
+			const { scrollHeight } = textAreaRef.current;
+			textAreaRef.current.style.height = `${scrollHeight}px`;
+		}
+	}, [textAreaRef, inputText]);
 
 	return (
 		<div className="flex h-screen w-screen">
@@ -41,10 +53,14 @@ const HomePage = () => {
 						<form className="gap-3 m-auto max-w-3xl" onSubmit={submitHandler}>
 							<div className="bg-white border border-gray-300 rounded-2xl flex relative">
 								<textarea
-									tabIndex={0}
 									placeholder="Message MoeGPT..."
 									rows={1}
-									className="w-full resize-none bg-transparent py-3.5 px-10 overflow-hidden focus:outline-0"
+									className="w-full resize-none bg-transparent py-3.5 px-10 focus:outline-0"
+									ref={textAreaRef}
+									style={{
+										maxHeight: `${maxTextAreaHeight}px`,
+										overflow: `${isTextAreaOverflow ? '' : 'hidden'}`,
+									}}
 									onChange={changeHandler}
 									value={inputText}
 								></textarea>
