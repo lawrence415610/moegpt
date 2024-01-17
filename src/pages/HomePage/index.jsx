@@ -1,11 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
-import Logo from '../assets/logo.png';
+import Logo from '../../assets/logo.png';
+import ChatRecord from './chatRecord';
 
 const HomePage = () => {
 	const maxTextAreaHeight = 200;
 	const textAreaRef = useRef(null);
 	const [inputText, setInputText] = useState('');
 	const [isTextAreaOverflow, setIsTextAreaOverflow] = useState(false);
+	const [chatSessions, setChatSessions] = useState([]);
 
 	const changeHandler = (e) => {
 		setInputText(e.target.value);
@@ -14,10 +16,9 @@ const HomePage = () => {
 
 	const submitHandler = (e) => {
 		e.preventDefault();
+		chatSessions.push({ question: inputText, answer: 'You know nothing, Snow.' });
+		setChatSessions(chatSessions);
 		setInputText('');
-		console.log({
-			inputText,
-		});
 	};
 
 	useEffect(() => {
@@ -45,10 +46,36 @@ const HomePage = () => {
 			</div>
 			<div className="h-full flex-1">
 				<main className="w-full h-full flex flex-col">
-					<div className="flex flex-1 items-center justify-center flex-col">
-						<img className="h-20 w-20 mb-3" src={Logo} />
-						<div className="text-2xl  font-medium mb-4">How can I help you today?</div>
-					</div>
+					{chatSessions.length == 0 ? (
+						<div className="flex flex-1 items-center justify-center flex-col">
+							<img className="h-20 w-20 mb-3" src={Logo} />
+							<div className="text-2xl  font-medium mb-4">
+								How can I help you today?
+							</div>
+						</div>
+					) : (
+						<div className="flex-1 overflow-hidden">
+							<div className="h-full overflow-auto">
+								{chatSessions.map(({ question, answer }) => {
+									return (
+										<>
+											<ChatRecord
+												profile={Logo}
+												user={'You'}
+												text={question}
+											/>
+											<ChatRecord
+												profile={Logo}
+												user={'MoeGPT'}
+												text={answer}
+											/>
+										</>
+									);
+								})}
+							</div>
+						</div>
+					)}
+
 					<div className="w-full pt-2">
 						<form className="gap-3 m-auto max-w-3xl" onSubmit={submitHandler}>
 							<div className="bg-white border border-gray-300 rounded-2xl flex relative">
