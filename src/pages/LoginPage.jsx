@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import AuthContext from '../hooks/useAuth';
 
-
 const LoginPage = () => {
 	const navigate = useNavigate();
 	const { login } = AuthContext();
