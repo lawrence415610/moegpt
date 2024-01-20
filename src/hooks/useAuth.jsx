@@ -9,25 +9,31 @@ const useAuth = () => {
 	const token = Cookies.get('token');
 
 	useEffect(() => {
-		if (token) {
-			setUser({
-				username: 'test',
-			});
-		} else {
+		if (!token) {
 			setUser(null);
+		} else {
+			setUser({
+				id: 1,
+				username: 'test',
+				email: 'test@test.com',
+				avatar: 'https://picsum.photos/200',
+			});
 		}
 	}, [token]);
-    
+
 	return {
 		user,
-		login() {
-            //TODO: get response from server
+		login(userInfo) {
+			const { email, password } = userInfo;
+			console.log({
+				email,
+				password,
+			});
+			//TODO: send this email and password to server, if resolve, get token and user info,
+			// then set token and user info to cookies and setUser
 			return new Promise((res) => {
 				res();
-				Cookies.set('token', 'test');
-				setUser({
-					username: 'test',
-				});
+				Cookies.set('token', 'test token');
 			});
 		},
 		logout() {

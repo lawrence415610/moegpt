@@ -37,13 +37,12 @@ const LoginPage = () => {
 	const submitHandler = (e) => {
 		e.preventDefault();
 		if (isDisabled) return;
-		//TODO: send Post request to server
-		console.log({
+		
+		login({
 			email,
 			password,
-		});
-		login().then(() => {
-			console.log('logged in');
+		}).then(() => {
+			console.log('logged in successfully');
 			navigate('/');
 		});
 	};
