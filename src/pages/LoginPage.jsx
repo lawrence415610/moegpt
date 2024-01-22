@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import AuthContext from '../hooks/useAuth';
 
 const LoginPage = () => {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+	const navigate = useNavigate();
+	const { login } = AuthContext();
+
+	const [email, setEmail] = useState('test@test.com');
+	const [password, setPassword] = useState('Test1234');
 	const [emailError, setEmailError] = useState(null);
 	const [passwordError, setPasswordError] = useState(null);
 	const [isDisabled, setIsDisabled] = useState(true);
@@ -33,9 +37,12 @@ const LoginPage = () => {
 	const submitHandler = (e) => {
 		e.preventDefault();
 		if (isDisabled) return;
-		console.log({
+		login({
 			email,
 			password,
+		}).then(() => {
+			console.log('logged in successfully');
+			navigate('/');
 		});
 	};
 

@@ -1,10 +1,12 @@
 import './App.css';
 import Router from './routes';
-
+import { AuthProvider } from './hooks/useAuth';
 function App() {
-  return (
-    <Router />
-  )
+	return (
+		<AuthProvider>
+			<Router />
+		</AuthProvider>
+	);
 }
 
-export default App
+export default App;
