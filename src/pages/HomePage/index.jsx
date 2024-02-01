@@ -48,15 +48,18 @@ const HomePage = () => {
 						<div>
 							<h3 className="h-9 pb-2 pt-3 px-2 text-dark-grey text-xs">Today</h3>
 							<ol className="text-light-grey">
-								<li className="relative">
-									<a className="p-2 text-sm" href="/">
-										Who are you?
+								<li className="group relative ">
+									<a
+										className="p-2 text-sm flex group-hover:bg-gray-800 rounded-lg"
+										href="/"
+									>
+										<div className="grow">Who are you?</div>
 									</a>
-									<div className="absolute bottom-0 right-0 top-0 pr-2 flex items-center gap-1.5">
-										<button>
+									<div className="absolute bottom-0 right-0 top-0 pr-2 items-center gap-1.5 hidden group-hover:flex">
+										<button className="hover:translate-y-0.5">
 											<FiEdit2 />
 										</button>
-										<button>
+										<button className="hover:text-rose-600">
 											<RiDeleteBin6Line />
 										</button>
 									</div>
