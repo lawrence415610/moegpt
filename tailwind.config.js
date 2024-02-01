@@ -5,6 +5,8 @@ export default {
 		extend: {
 			colors: {
 				'dark-blue': '#04364A',
+				'dark-grey': '#999999',
+				'light-grey': '#d9d9e3',
 			},
 			fontFamily: {
 				sans: ['Inter', 'sans-serif'],

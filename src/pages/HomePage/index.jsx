@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Logo from '../../assets/logo.png';
+import { FiEdit2 } from 'react-icons/fi';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 import ChatRecord from './chatRecord';
 
 const HomePage = () => {
@@ -41,6 +43,26 @@ const HomePage = () => {
 							<img className="h-10 w-10" src={Logo} />
 							MoeGPT
 						</a>
+					</div>
+					<div className="flex flex-col gap-2 pb-2">
+						<div>
+							<h3 className="h-9 pb-2 pt-3 px-2 text-dark-grey text-xs">Today</h3>
+							<ol className="text-light-grey">
+								<li className="relative">
+									<a className="p-2 text-sm" href="/">
+										Who are you?
+									</a>
+									<div className="absolute bottom-0 right-0 top-0 pr-2 flex items-center gap-1.5">
+										<button>
+											<FiEdit2 />
+										</button>
+										<button>
+											<RiDeleteBin6Line />
+										</button>
+									</div>
+								</li>
+							</ol>
+						</div>
 					</div>
 				</nav>
 			</div>
