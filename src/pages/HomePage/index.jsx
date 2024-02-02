@@ -1,16 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import Logo from '../../assets/logo.png';
-import { FiEdit2 } from 'react-icons/fi';
-import { RiDeleteBin6Line } from 'react-icons/ri';
 import ChatRecord from './chatRecord';
+import HistoryRecord from './HistoryRecord';
 
 const HomePage = () => {
 	const maxTextAreaHeight = 200;
 	const textAreaRef = useRef(null);
-	const titleRef = useRef(null);
 	const [inputText, setInputText] = useState('');
-	const [inputTitle, setInputTitle] = useState('Who are you?');
-	const [isEdit, setIsEdit] = useState(false);
+	const [titleText, setTitleText] = useState('Who are you?');
 	const [isTextAreaOverflow, setIsTextAreaOverflow] = useState(false);
 	const [chatSessions, setChatSessions] = useState([]);
 
@@ -26,21 +23,13 @@ const HomePage = () => {
 		setInputText('');
 	};
 
-	const toggleEditing = () => {
-		setIsEdit(true);
-	};
-
 	useEffect(() => {
 		if (textAreaRef) {
 			textAreaRef.current.style.height = '0px';
 			const { scrollHeight } = textAreaRef.current;
 			textAreaRef.current.style.height = `${scrollHeight}px`;
 		}
-
-		if (isEdit) {
-			titleRef.current.focus();
-		}
-	}, [textAreaRef, inputText, isEdit]);
+	}, [textAreaRef, inputText]);
 
 	return (
 		<div className="flex h-screen w-screen">
@@ -59,40 +48,10 @@ const HomePage = () => {
 						<div>
 							<h3 className="h-9 pb-2 pt-3 px-2 text-dark-grey text-xs">Today</h3>
 							<ol className="text-light-grey">
-								<li className="group relative ">
-									{isEdit ? (
-										<div className="p-2 text-sm  bg-gray-800 rounded-lg">
-											<input
-												className="grow bg-gray-800 outline-none border-2 border-transparent focus:border-solid  focus:border-indigo-600"
-												value={inputTitle}
-												onChange={(e) => setInputTitle(e.target.value)}
-												onBlur={() => setIsEdit(false)}
-												ref={titleRef}
-											></input>
-										</div>
-									) : (
-										<a
-											className="p-2 text-sm flex group-hover:bg-gray-800 rounded-lg "
-											href="/"
-										>
-											<div className="grow border-2 border-transparent">
-												{inputTitle}
-											</div>
-										</a>
-									)}
-
-									<div className="absolute bottom-0 right-0 top-0 pr-2 items-center gap-1.5 hidden group-hover:flex">
-										<button
-											className="hover:translate-y-0.5"
-											onClick={toggleEditing}
-										>
-											<FiEdit2 />
-										</button>
-										<button className="hover:text-rose-600">
-											<RiDeleteBin6Line />
-										</button>
-									</div>
-								</li>
+								<HistoryRecord
+									titleText={titleText}
+									changeHandler={(e) => setTitleText(e.target.value)}
+								/>
 							</ol>
 						</div>
 					</div>
