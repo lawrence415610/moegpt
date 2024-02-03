@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import Logo from '../../assets/logo.png';
-import ChatRecord from './chatRecord';
+import ChatRecord from './ChatRecord';
 import HistoryRecord from './HistoryRecord';
 
 const HomePage = () => {
