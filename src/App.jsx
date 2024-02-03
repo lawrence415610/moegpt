@@ -1,10 +1,25 @@
 import './App.css';
-import Router from './routes';
-import { AuthProvider } from './hooks/useAuth';
+import { AuthProvider } from './context';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
+import HomePage from './pages/HomePage';
+import RequireAuth from './components/RequireAuth';
 function App() {
 	return (
 		<AuthProvider>
-			<Router />
+			<ToastContainer position="top-right" />
+			<Router>
+				<Routes>
+					<Route element={<RequireAuth />}>
+						<Route path="/" element={<HomePage />} exact />
+					</Route>
+					<Route path="/login" element={<LoginPage />} />
+					<Route path="/signup" element={<SignupPage />} />
+				</Routes>
+			</Router>
 		</AuthProvider>
 	);
 }

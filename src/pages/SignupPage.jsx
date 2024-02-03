@@ -1,7 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import AuthContext from '../context';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const SignupPage = () => {
+	const { state } = AuthContext();
+	const navigate = useNavigate();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
@@ -43,13 +49,21 @@ const SignupPage = () => {
 		}
 	};
 
-	const submitHandler = (e) => {
+	const submitHandler = async (e) => {
 		e.preventDefault();
 		if (isDisabled) return;
-		console.log({
-			email,
-			password,
-		});
+		try {
+			await axios.post('http://localhost:5555/api/signup', {
+				email,
+				password,
+			});
+			toast.success('Signup successfully!');
+			setEmail('');
+			setPassword('');
+			navigate('/');
+		} catch (err) {
+			toast.error(err.response.data);
+		}
 	};
 
 	useEffect(() => {
@@ -58,7 +72,11 @@ const SignupPage = () => {
 		} else {
 			setIsDisabled(false);
 		}
-	}, [emailError, passwordError, confirmPasswordError]);
+
+		if (state.user !== null) {
+			navigate('/');
+		}
+	}, [emailError, passwordError, confirmPasswordError, state.user, navigate]);
 
 	return (
 		<main className="flex items-center justify-center bg-dark-blue h-screen body-font">

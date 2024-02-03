@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import AuthContext from '../hooks/useAuth';
-
+import axios from 'axios';
+import AuthContext from '../context';
+import { toast } from 'react-toastify';
 const LoginPage = () => {
+	const { state, dispatch } = AuthContext();
 	const navigate = useNavigate();
-	const { login } = AuthContext();
-
-	const [email, setEmail] = useState('test@test.com');
+	const [email, setEmail] = useState('testuser@gmail.com');
 	const [password, setPassword] = useState('Test1234');
 	const [emailError, setEmailError] = useState(null);
 	const [passwordError, setPasswordError] = useState(null);
@@ -34,16 +34,28 @@ const LoginPage = () => {
 		}
 	};
 
-	const submitHandler = (e) => {
+	const submitHandler = async (e) => {
 		e.preventDefault();
 		if (isDisabled) return;
-		login({
-			email,
-			password,
-		}).then(() => {
-			console.log('logged in successfully');
+		try {
+			const { data } = await axios.post(
+				'http://localhost:5555/api/login',
+				{
+					email,
+					password,
+				},
+				{ withCredentials: true, credentials: 'include' }
+			);
+			dispatch({
+				type: 'LOGIN',
+				payload: data,
+			});
+			window.localStorage.setItem('user', JSON.stringify(data));
 			navigate('/');
-		});
+			toast.success('Login successfully!');
+		} catch (err) {
+			toast.err(err.response.data);
+		}
 	};
 
 	useEffect(() => {
@@ -52,7 +64,7 @@ const LoginPage = () => {
 		} else {
 			setIsDisabled(false);
 		}
-	}, [emailError, passwordError]);
+	}, [emailError, passwordError, state.user]);
 
 	return (
 		<main className="flex items-center justify-center bg-dark-blue h-screen body-font">
