@@ -1,11 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import Logo from '../../assets/logo.png';
-import ChatRecord from './ChatRecord';
+import ChatRecord from './chatRecord';
+import HistoryRecord from './HistoryRecord';
 
 const HomePage = () => {
 	const maxTextAreaHeight = 200;
 	const textAreaRef = useRef(null);
 	const [inputText, setInputText] = useState('');
+	const [titleText, setTitleText] = useState('Who are you?');
 	const [isTextAreaOverflow, setIsTextAreaOverflow] = useState(false);
 	const [chatSessions, setChatSessions] = useState([]);
 
@@ -41,6 +43,17 @@ const HomePage = () => {
 							<img className="h-10 w-10" src={Logo} />
 							MoeGPT
 						</a>
+					</div>
+					<div className="flex flex-col gap-2 pb-2">
+						<div>
+							<h3 className="h-9 pb-2 pt-3 px-2 text-dark-grey text-xs">Today</h3>
+							<ol className="text-light-grey">
+								<HistoryRecord
+									titleText={titleText}
+									changeHandler={(e) => setTitleText(e.target.value)}
+								/>
+							</ol>
+						</div>
 					</div>
 				</nav>
 			</div>
