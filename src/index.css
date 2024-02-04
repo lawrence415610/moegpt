@@ -19,7 +19,7 @@
 		@apply bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-4 rounded;
 	}
 	/* For all clickable items */
-	.item-box{
-		@apply text-white flex px-2 items-center gap-2 rounded-lg h-12 hover:bg-neutral-800
+	.item-box {
+		@apply text-white flex px-2 items-center gap-2 rounded-lg h-12 hover:bg-neutral-800;
 	}
 }
