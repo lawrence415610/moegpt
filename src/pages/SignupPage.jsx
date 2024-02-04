@@ -56,6 +56,7 @@ const SignupPage = () => {
 			await axios.post('http://localhost:5555/api/signup', {
 				email,
 				password,
+				username: email.split('@')[0],
 			});
 			toast.success('Signup successfully!');
 			setEmail('');
