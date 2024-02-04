@@ -20,6 +20,6 @@
 	}
 	/* For all clickable items */
 	.item-box {
-		@apply text-white flex px-2 items-center gap-2 rounded-lg h-12 hover:bg-neutral-800;
+		@apply text-white flex px-2 items-center gap-2 rounded-lg h-12 hover:bg-neutral-800 select-none;
 	}
 }
