@@ -19,9 +19,9 @@ const HistoryRecord = ({ titleText, changeHandler }) => {
 		<>
 			<li className="group relative ">
 				{isEdit ? (
-					<div className="p-2 text-sm  bg-gray-800 rounded-lg">
+					<div className="p-2 text-sm bg-neutral-800 rounded-lg">
 						<input
-							className="grow bg-gray-800 outline-none border-2 border-transparent focus:border-solid  focus:border-indigo-600"
+							className="grow bg-neutral-800 outline-none border-2 border-transparent focus:border-solid  focus:border-indigo-600"
 							value={titleText}
 							onChange={changeHandler}
 							onBlur={() => setIsEdit(false)}
@@ -29,7 +29,7 @@ const HistoryRecord = ({ titleText, changeHandler }) => {
 						></input>
 					</div>
 				) : (
-					<a className="p-2 text-sm flex group-hover:bg-gray-800 rounded-lg " href="/">
+					<a className="p-2 text-sm flex group-hover:bg-neutral-800 rounded-lg " href="/">
 						<div className="grow border-2 border-transparent">{titleText}</div>
 					</a>
 				)}

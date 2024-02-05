@@ -4,6 +4,10 @@ import ChatRecord from './ChatRecord';
 import HistoryRecord from './HistoryRecord';
 import { TbLayoutSidebarLeftCollapseFilled } from 'react-icons/tb';
 import { TbLayoutSidebarLeftExpandFilled } from 'react-icons/tb';
+import AuthContext from '../../context';
+import Avatar from '../../components/Avatar';
+import { GoGear } from 'react-icons/go';
+import { MdOutlineLogout } from 'react-icons/md';
 
 const HomePage = () => {
 	const maxTextAreaHeight = 200;
@@ -13,6 +17,9 @@ const HomePage = () => {
 	const [isTextAreaOverflow, setIsTextAreaOverflow] = useState(false);
 	const [chatSessions, setChatSessions] = useState([]);
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+	const { state } = AuthContext();
+	const user = state.user;
+	const [toolbox, setToolbox] = useState(false);
 
 	const changeHandler = (e) => {
 		setInputText(e.target.value);
@@ -24,6 +31,16 @@ const HomePage = () => {
 		chatSessions.push({ question: inputText, answer: 'You know nothing, Snow.' });
 		setChatSessions(chatSessions);
 		setInputText('');
+	};
+
+	const toolboxHandler = () => {
+		// if click on the item, toggle the toolbox
+		setToolbox(!toolbox);
+		//if click outside the item, close the toolbox
+		document.addEventListener('click', (e) => {
+			if (e.target.closest('.item-box')) return;
+			setToolbox(false);
+		});
 	};
 
 	useEffect(() => {
@@ -49,13 +66,42 @@ const HomePage = () => {
 					</div>
 					<div className="flex flex-col gap-2 pb-2">
 						<div>
-							<h3 className="h-9 pb-2 pt-3 px-2 text-dark-grey text-xs">Today</h3>
-							<ol className="text-light-grey">
-								<HistoryRecord
-									titleText={titleText}
-									changeHandler={(e) => setTitleText(e.target.value)}
-								/>
-							</ol>
+							<a className="item-box" href="/">
+								<img className="h-10 w-10" src={Logo} />
+								MoeGPT
+							</a>
+						</div>
+						<div className="flex flex-col gap-2 pb-2">
+							<div>
+								<h3 className="h-9 pb-2 pt-3 px-2 text-dark-grey text-xs">Today</h3>
+								<ol className="text-light-grey">
+									<HistoryRecord
+										titleText={titleText}
+										changeHandler={(e) => setTitleText(e.target.value)}
+									/>
+								</ol>
+							</div>
+						</div>
+					</div>
+					<div>
+						{toolbox && (
+							<div className="border border-slate-700 bg-neutral-800 flex flex-col gap-2 mb-1 py-2 rounded-md">
+								<div className="item-box rounded-none hover:bg-gray-700 flex gap-2">
+									<GoGear />
+									Profile Settings
+								</div>
+								<div className="item-box rounded-none border-t border-gray-700 hover:bg-gray-700 flex gap-2 text-red-500">
+									<MdOutlineLogout />
+									Logout
+								</div>
+							</div>
+						)}
+						<div
+							className={`item-box ${toolbox ? 'bg-neutral-800' : ''}`}
+							onClick={() => toolboxHandler()}
+						>
+							<Avatar src={user.avatar} />
+							<span className="select-none">{user.username}</span>
 						</div>
 					</div>
 				</nav>
