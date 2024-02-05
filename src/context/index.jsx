@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import { getCsrfTokenApi } from '../apis';
 
 const authContext = createContext();
 const rootReducer = (state, action) => {
@@ -23,6 +25,13 @@ export const AuthProvider = ({ children }) => {
 			type: 'LOGIN',
 			payload: JSON.parse(window.localStorage.getItem('user')),
 		});
+
+		// csrf protection
+		const getCsrfToken = async () => {
+			const data = await getCsrfTokenApi();
+			axios.defaults.headers['X-CSRF-Token'] = data.csrfToken;
+		};
+		getCsrfToken();
 	}, []);
 	return (
 		<authContext.Provider
