@@ -35,6 +35,7 @@ export const signupApi = async ({ email, password }) => {
 	const { data } = await axios.post('/signup', {
 		email,
 		password,
+		username: email.split('@')[0],
 	});
 	return data;
 };
