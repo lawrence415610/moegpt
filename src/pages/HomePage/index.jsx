@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import Logo from '../../assets/logo.png';
 import ChatRecord from './ChatRecord';
 import HistoryRecord from './HistoryRecord';
+import { TbLayoutSidebarLeftCollapseFilled } from 'react-icons/tb';
+import { TbLayoutSidebarLeftExpandFilled } from 'react-icons/tb';
 import AuthContext from '../../context';
 import Avatar from '../../components/Avatar';
 import { GoGear } from 'react-icons/go';
@@ -14,6 +16,7 @@ const HomePage = () => {
 	const [titleText, setTitleText] = useState('Who are you?');
 	const [isTextAreaOverflow, setIsTextAreaOverflow] = useState(false);
 	const [chatSessions, setChatSessions] = useState([]);
+	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 	const { state } = AuthContext();
 	const user = state.user;
 	const [toolbox, setToolbox] = useState(false);
@@ -50,9 +53,18 @@ const HomePage = () => {
 
 	return (
 		<div className="flex h-screen w-screen">
-			<div className="w-64 bg-black">
-				<nav className="px-3 h-full w-full py-3.5 flex flex-col justify-between">
-					<div>
+			<div className={`w-64 bg-black ${isSidebarOpen ? '' : 'hidden'}`}>
+				<nav className="px-3 h-full w-full">
+					<div className="pt-3.5">
+						<a
+							className="text-white flex px-2 items-center gap-2 rounded-lg h-10 hover:bg-neutral-800"
+							href="/"
+						>
+							<img className="h-10 w-10" src={Logo} />
+							MoeGPT
+						</a>
+					</div>
+					<div className="flex flex-col gap-2 pb-2">
 						<div>
 							<a className="item-box" href="/">
 								<img className="h-10 w-10" src={Logo} />
@@ -94,7 +106,23 @@ const HomePage = () => {
 					</div>
 				</nav>
 			</div>
-			<div className="h-full flex-1">
+			<div className={`h-full flex-1 ${isSidebarOpen ? 'w-[calc(100%-16rem)]' : 'w-full'}`}>
+				<header className="fixed p-3">
+					{isSidebarOpen && (
+						<TbLayoutSidebarLeftCollapseFilled
+							size="1.5em"
+							className="hover:text-gray-500 cursor-pointer"
+							onClick={() => setIsSidebarOpen(false)}
+						/>
+					)}
+					{!isSidebarOpen && (
+						<TbLayoutSidebarLeftExpandFilled
+							size="1.5em"
+							className="hover:text-gray-500 cursor-pointer"
+							onClick={() => setIsSidebarOpen(true)}
+						/>
+					)}
+				</header>
 				<main className="w-full h-full flex flex-col">
 					{chatSessions.length == 0 ? (
 						<div className="flex flex-1 items-center justify-center flex-col">
