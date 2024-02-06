@@ -70,7 +70,7 @@ const HomePage = () => {
 					</div>
 
 					<div className="flex flex-col gap-2">
-						<div>
+						<div className="overflow-y-auto h-[80vh]">
 							<h3 className="h-9 pb-2 pt-3 px-2 text-dark-grey text-xs">Today</h3>
 							<ol className="text-light-grey">
 								<HistoryRecord
@@ -84,7 +84,7 @@ const HomePage = () => {
 
 				<div>
 					{toolbox && (
-						<div className="border border-slate-700 bg-neutral-800 flex flex-col gap-2 mb-1 py-2 rounded-md">
+						<div className="absolute bottom-[70px] w-[232px] border border-slate-700 bg-neutral-800 flex flex-col gap-2 mb-1 py-2 rounded-md">
 							<div className="item-box rounded-none hover:bg-gray-700 flex gap-2">
 								<GoGear />
 								Profile Settings

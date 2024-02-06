@@ -28,8 +28,12 @@ export const AuthProvider = ({ children }) => {
 
 		// csrf protection
 		const getCsrfToken = async () => {
-			const data = await getCsrfTokenApi();
-			axios.defaults.headers['X-CSRF-Token'] = data.csrfToken;
+			try {
+				const data = await getCsrfTokenApi();
+				axios.defaults.headers['X-CSRF-Token'] = data.csrfToken;
+			} catch (err) {
+				throw new Error('Error happens when trying to get csrfToken, Error Msg: ' + err);
+			}
 		};
 		getCsrfToken();
 	}, []);

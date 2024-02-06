@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import AuthContext from '../context';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { signupApi } from '../apis';
 
 const SignupPage = () => {
-	const { state } = AuthContext();
 	const navigate = useNavigate();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -62,6 +60,7 @@ const SignupPage = () => {
 			navigate('/');
 		} catch (err) {
 			toast.error(err.response.data);
+			throw new Error('Error happens when trying to signup, Error Msg: ' + err);
 		}
 	};
 
@@ -75,7 +74,7 @@ const SignupPage = () => {
 		// if (state.user !== null) {
 		// 	navigate('/');
 		// }
-	}, [emailError, passwordError, confirmPasswordError, state.user, navigate]);
+	}, [emailError, passwordError, confirmPasswordError]);
 
 	return (
 		<main className="flex items-center justify-center bg-dark-blue h-screen body-font">
