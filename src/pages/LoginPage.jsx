@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
 import AuthContext from '../context';
 import { toast } from 'react-toastify';
+import { loginApi } from '../apis';
+
 const LoginPage = () => {
-	const { state, dispatch } = AuthContext();
+	const { dispatch } = AuthContext();
 	const navigate = useNavigate();
 	const [email, setEmail] = useState('testuser@gmail.com');
 	const [password, setPassword] = useState('Test1234');
@@ -13,6 +14,14 @@ const LoginPage = () => {
 	const [isDisabled, setIsDisabled] = useState(true);
 	const emailRegex = /^[a-zA-Z0-6._%+-]+@[a-zA-Z0-6.-]+\.[a-zA-Z]{2,}$/;
 	const passwordRegex = /^(?=.*[a-z])(?=.*\d).{8,}$/;
+
+	useEffect(() => {
+		if (emailError || passwordError) {
+			setIsDisabled(true);
+		} else {
+			setIsDisabled(false);
+		}
+	}, [emailError, passwordError]);
 
 	const emailHandler = (e) => {
 		const input = e.target.value;
@@ -38,14 +47,7 @@ const LoginPage = () => {
 		e.preventDefault();
 		if (isDisabled) return;
 		try {
-			const { data } = await axios.post(
-				'http://localhost:5555/api/login',
-				{
-					email,
-					password,
-				},
-				{ withCredentials: true, credentials: 'include' }
-			);
+			const data = await loginApi({ email, password });
 			dispatch({
 				type: 'LOGIN',
 				payload: data,
@@ -57,14 +59,6 @@ const LoginPage = () => {
 			toast.err(err.response.data);
 		}
 	};
-
-	useEffect(() => {
-		if (emailError || passwordError) {
-			setIsDisabled(true);
-		} else {
-			setIsDisabled(false);
-		}
-	}, [emailError, passwordError, state.user]);
 
 	return (
 		<main className="flex items-center justify-center bg-dark-blue h-screen body-font">

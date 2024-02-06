@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AuthContext from '../context';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { toast } from 'react-toastify';
+import { signupApi } from '../apis';
 
 const SignupPage = () => {
 	const { state } = AuthContext();
@@ -53,12 +53,10 @@ const SignupPage = () => {
 		e.preventDefault();
 		if (isDisabled) return;
 		try {
-			await axios.post('http://localhost:5555/api/signup', {
-				email,
-				password,
-				username: email.split('@')[0],
-			});
-			toast.success('Signup successfully!');
+			const data = await signupApi({ email, password });
+			if (data.ok) {
+				toast.success('Signup successfully!');
+			}
 			setEmail('');
 			setPassword('');
 			navigate('/');
@@ -73,10 +71,10 @@ const SignupPage = () => {
 		} else {
 			setIsDisabled(false);
 		}
-
-		if (state.user !== null) {
-			navigate('/');
-		}
+		// use this after logout feature is implemented
+		// if (state.user !== null) {
+		// 	navigate('/');
+		// }
 	}, [emailError, passwordError, confirmPasswordError, state.user, navigate]);
 
 	return (
