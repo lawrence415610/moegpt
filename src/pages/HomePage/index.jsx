@@ -53,9 +53,13 @@ const HomePage = () => {
 
 	return (
 		<div className="flex h-screen w-screen">
-			<div className={`w-64 bg-black ${isSidebarOpen ? '' : 'hidden'}`}>
-				<nav className="px-3 h-full w-full">
-					<div className="pt-3.5">
+			<nav
+				className={`bg-black w-64 px-3 py-3.5 h-full ${
+					isSidebarOpen ? '' : 'hidden'
+				} flex flex-col justify-between`}
+			>
+				<div>
+					<div>
 						<a
 							className="text-white flex px-2 items-center gap-2 rounded-lg h-10 hover:bg-neutral-800"
 							href="/"
@@ -64,48 +68,43 @@ const HomePage = () => {
 							MoeGPT
 						</a>
 					</div>
-					<div className="flex flex-col gap-2 pb-2">
-						<div>
-							<a className="item-box" href="/">
-								<img className="h-10 w-10" src={Logo} />
-								MoeGPT
-							</a>
-						</div>
-						<div className="flex flex-col gap-2 pb-2">
-							<div>
-								<h3 className="h-9 pb-2 pt-3 px-2 text-dark-grey text-xs">Today</h3>
-								<ol className="text-light-grey">
-									<HistoryRecord
-										titleText={titleText}
-										changeHandler={(e) => setTitleText(e.target.value)}
-									/>
-								</ol>
-							</div>
+
+					<div className="flex flex-col gap-2">
+						<div className="overflow-y-auto h-[80vh]">
+							<h3 className="h-9 pb-2 pt-3 px-2 text-dark-grey text-xs">Today</h3>
+							<ol className="text-light-grey">
+								<HistoryRecord
+									titleText={titleText}
+									changeHandler={(e) => setTitleText(e.target.value)}
+								/>
+							</ol>
 						</div>
 					</div>
-					<div>
-						{toolbox && (
-							<div className="border border-slate-700 bg-neutral-800 flex flex-col gap-2 mb-1 py-2 rounded-md">
-								<div className="item-box rounded-none hover:bg-gray-700 flex gap-2">
-									<GoGear />
-									Profile Settings
-								</div>
-								<div className="item-box rounded-none border-t border-gray-700 hover:bg-gray-700 flex gap-2 text-red-500">
-									<MdOutlineLogout />
-									Logout
-								</div>
+				</div>
+
+				<div>
+					{toolbox && (
+						<div className="absolute bottom-[70px] w-[232px] border border-slate-700 bg-neutral-800 flex flex-col gap-2 mb-1 py-2 rounded-md">
+							<div className="item-box rounded-none hover:bg-gray-700 flex gap-2">
+								<GoGear />
+								Profile Settings
 							</div>
-						)}
-						<div
-							className={`item-box ${toolbox ? 'bg-neutral-800' : ''}`}
-							onClick={() => toolboxHandler()}
-						>
-							<Avatar src={user.avatar} />
-							<span className="select-none">{user.username}</span>
+							<div className="item-box rounded-none border-t border-gray-700 hover:bg-gray-700 flex gap-2 text-red-500">
+								<MdOutlineLogout />
+								Logout
+							</div>
 						</div>
+					)}
+					<div
+						className={`item-box ${toolbox ? 'bg-neutral-800' : ''}`}
+						onClick={() => toolboxHandler()}
+					>
+						<Avatar src={user.avatar} />
+						<span className="select-none">{user.username}</span>
 					</div>
-				</nav>
-			</div>
+				</div>
+			</nav>
+
 			<div className={`h-full flex-1 ${isSidebarOpen ? 'w-[calc(100%-16rem)]' : 'w-full'}`}>
 				<header className="fixed p-3">
 					{isSidebarOpen && (
