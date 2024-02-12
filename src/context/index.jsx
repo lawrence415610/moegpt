@@ -26,6 +26,34 @@ export const AuthProvider = ({ children }) => {
 			payload: JSON.parse(window.localStorage.getItem('user')),
 		});
 
+		axios.interceptors.response.use(
+			function (response) {
+				// any status code of range 2xx,then trigger
+				return response;
+			},
+			function (error) {
+				// any status code outside range of 2xx then trigger
+				let res = error.response;
+				if (res.status === 401 && res.config && !res.config.__isRetryRequest) {
+					return new Promise((resolve, reject) => {
+						axios
+							.get('logout')
+							.then(() => {
+								console.log('401 error');
+								dispatch({ type: 'LOGOUT' });
+								window.localStorage.removeItem('user');
+								window.location.replace('/login');
+							})
+							.catch((err) => {
+								console.log(err);
+								reject(error);
+							});
+					});
+				}
+				return Promise.reject(error);
+			}
+		);
+
 		// csrf protection
 		const getCsrfToken = async () => {
 			try {
