@@ -39,3 +39,8 @@ export const signupApi = async ({ email, password }) => {
 	});
 	return data;
 };
+
+export const logoutApi = async () => {
+	const { data } = await axios.get('/logout');
+	return data;
+};

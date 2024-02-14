@@ -8,6 +8,10 @@ import AuthContext from '../../context';
 import Avatar from '../../components/Avatar';
 import { GoGear } from 'react-icons/go';
 import { MdOutlineLogout } from 'react-icons/md';
+import { logoutApi } from '../../apis';
+import { toast } from 'react-toastify';
+import Cookies from 'js-cookie';
+// import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
 	const maxTextAreaHeight = 200;
@@ -17,9 +21,10 @@ const HomePage = () => {
 	const [isTextAreaOverflow, setIsTextAreaOverflow] = useState(false);
 	const [chatSessions, setChatSessions] = useState([]);
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-	const { state } = AuthContext();
-	const user = state.user;
 	const [toolbox, setToolbox] = useState(false);
+	const { state, dispatch } = AuthContext();
+	const user = state.user;
+	// const navigate = useNavigate();
 
 	const changeHandler = (e) => {
 		setInputText(e.target.value);
@@ -41,6 +46,27 @@ const HomePage = () => {
 			if (e.target.closest('.item-box')) return;
 			setToolbox(false);
 		});
+	};
+
+	const logoutHandler = async () => {
+		dispatch({ type: 'LOGOUT' });
+		window.localStorage.removeItem('user');
+		// I don't know why the backend didn't remove the token from the cookie
+		// so I remove it manually
+		Cookies.remove('token');
+		try {
+			const data = await logoutApi();
+			if (data.ok) {
+				toast.success('User successfully Logged out.');
+			} else {
+				toast.error('Error happened while sending logout request.');
+			}
+		} catch (err) {
+			toast.error(err);
+		}
+		window.location.replace('/login');
+		// why useNavigate doesn't work either?
+		// navigate('/login', { replace: true });
 	};
 
 	useEffect(() => {
@@ -89,7 +115,10 @@ const HomePage = () => {
 								<GoGear />
 								Profile Settings
 							</div>
-							<div className="item-box rounded-none border-t border-gray-700 hover:bg-gray-700 flex gap-2 text-red-500">
+							<div
+								onClick={logoutHandler}
+								className="item-box rounded-none border-t border-gray-700 hover:bg-gray-700 flex gap-2 text-red-500"
+							>
 								<MdOutlineLogout />
 								Logout
 							</div>
