@@ -10,8 +10,7 @@ import { GoGear } from 'react-icons/go';
 import { MdOutlineLogout } from 'react-icons/md';
 import { logoutApi } from '../../apis';
 import { toast } from 'react-toastify';
-import Cookies from 'js-cookie';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
 	const maxTextAreaHeight = 200;
@@ -24,7 +23,7 @@ const HomePage = () => {
 	const [toolbox, setToolbox] = useState(false);
 	const { state, dispatch } = AuthContext();
 	const user = state.user;
-	// const navigate = useNavigate();
+	const navigate = useNavigate();
 
 	const changeHandler = (e) => {
 		setInputText(e.target.value);
@@ -50,10 +49,6 @@ const HomePage = () => {
 
 	const logoutHandler = async () => {
 		dispatch({ type: 'LOGOUT' });
-		window.localStorage.removeItem('user');
-		// I don't know why the backend didn't remove the token from the cookie
-		// so I remove it manually
-		Cookies.remove('token');
 		try {
 			const data = await logoutApi();
 			if (data.ok) {
@@ -65,8 +60,7 @@ const HomePage = () => {
 			toast.error(err);
 		}
 		window.location.replace('/login');
-		// why useNavigate doesn't work either?
-		// navigate('/login', { replace: true });
+		navigate('/login', { replace: true });
 	};
 
 	useEffect(() => {
