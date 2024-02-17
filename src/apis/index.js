@@ -41,6 +41,9 @@ export const signupApi = async ({ email, password }) => {
 };
 
 export const logoutApi = async () => {
-	const { data } = await axios.get('/logout');
+	const { data } = await axios.get('/logout', {
+		credentials: 'include',
+		withCredentials: true,
+	});
 	return data;
 };
