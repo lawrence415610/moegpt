@@ -11,6 +11,7 @@ import { MdOutlineLogout } from 'react-icons/md';
 import { logoutApi } from '../../apis';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { sendMessageApi } from '../../apis';
 
 const HomePage = () => {
 	const maxTextAreaHeight = 200;
@@ -32,9 +33,20 @@ const HomePage = () => {
 
 	const submitHandler = (e) => {
 		e.preventDefault();
-		chatSessions.push({ question: inputText, answer: 'You know nothing, Snow.' });
-		setChatSessions(chatSessions);
+		if (!inputText) return;
 		setInputText('');
+		chatSessions.push({ question: inputText, answer: 'loading...' });
+		setChatSessions(chatSessions);
+		sendMessageApi(inputText)
+			.then((res) => {
+				chatSessions[chatSessions.length - 1] = { question: inputText, answer: res };
+				// make a new array to trigger the state change, may not be the best approach
+				const newChatSessions = [...chatSessions];
+				setChatSessions(newChatSessions);
+			})
+			.catch((err) => {
+				toast.error(err);
+			});
 	};
 
 	const toolboxHandler = () => {
