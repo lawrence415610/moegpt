@@ -12,6 +12,7 @@ import { logoutApi } from '../../apis';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { sendMessageApi } from '../../apis';
+import SettingModal from './SettingModal';
 
 const HomePage = () => {
 	const maxTextAreaHeight = 200;
@@ -22,6 +23,7 @@ const HomePage = () => {
 	const [chatSessions, setChatSessions] = useState([]);
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 	const [toolbox, setToolbox] = useState(false);
+	const [showSetting, setShowSetting] = useState(false);
 	const { state, dispatch } = AuthContext();
 	const user = state.user;
 	const navigate = useNavigate();
@@ -57,6 +59,10 @@ const HomePage = () => {
 			if (e.target.closest('.item-box')) return;
 			setToolbox(false);
 		});
+	};
+
+	const settingHandler = () => {
+		setShowSetting(true);
 	};
 
 	const logoutHandler = async () => {
@@ -117,9 +123,17 @@ const HomePage = () => {
 				<div>
 					{toolbox && (
 						<div className="absolute bottom-[70px] w-[232px] border border-slate-700 bg-neutral-800 flex flex-col gap-2 mb-1 py-2 rounded-md">
-							<div className="item-box rounded-none hover:bg-gray-700 flex gap-2">
+							<div
+								onClick={settingHandler}
+								className="item-box rounded-none hover:bg-gray-700 flex gap-2"
+							>
 								<GoGear />
 								Profile Settings
+								{showSetting ? (
+									<SettingModal closeModal={() => setShowSetting(false)} />
+								) : (
+									''
+								)}
 							</div>
 							<div
 								onClick={logoutHandler}
