@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import DeleteModal from './DeleteModal';
+import DeleteModal from '../DeleteModal';
 import { FiEdit2 } from 'react-icons/fi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
+import { Link } from 'react-router-dom';
 
-const HistoryRecord = ({ titleText, changeHandler }) => {
+const HistoryRecord = ({ titleText, changeHandler, id }) => {
 	const [isEdit, setIsEdit] = useState(false);
 	const [isDelete, setIsDelete] = useState(false);
 	const titleRef = useRef(null);
@@ -29,9 +30,12 @@ const HistoryRecord = ({ titleText, changeHandler }) => {
 						></input>
 					</div>
 				) : (
-					<a className="p-2 text-sm flex group-hover:bg-neutral-800 rounded-lg " href="/">
+					<Link
+						className="p-2 text-sm flex group-hover:bg-neutral-800 rounded-lg "
+						to={`chats/${id}`}
+					>
 						<div className="grow border-2 border-transparent">{titleText}</div>
-					</a>
+					</Link>
 				)}
 
 				<div className="absolute bottom-0 right-0 top-0 pr-2 items-center gap-1.5 hidden group-hover:flex">
@@ -55,6 +59,7 @@ const HistoryRecord = ({ titleText, changeHandler }) => {
 HistoryRecord.propTypes = {
 	titleText: PropTypes.string.isRequired,
 	changeHandler: PropTypes.func.isRequired,
+	id: PropTypes.string.isRequired,
 };
 
 export default HistoryRecord;
