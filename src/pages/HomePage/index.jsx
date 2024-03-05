@@ -130,7 +130,10 @@ const HomePage = () => {
 								<GoGear />
 								Profile Settings
 								{showSetting ? (
-									<SettingModal closeModal={() => setShowSetting(false)} />
+									<SettingModal
+										closeModal={() => setShowSetting(false)}
+										email={user.email}
+									/>
 								) : (
 									''
 								)}

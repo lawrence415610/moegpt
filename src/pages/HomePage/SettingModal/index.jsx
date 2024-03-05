@@ -3,9 +3,10 @@ import AvatarEditor from 'react-avatar-editor';
 import Dropzone from 'react-dropzone';
 import PropTypes from 'prop-types';
 import Modal from '../../../components/Modal';
+import { uploadAvatarApi } from '../../../apis';
 import { GoGear } from 'react-icons/go';
 
-const SettingModal = ({ closeModal }) => {
+const SettingModal = ({ closeModal, email }) => {
 	const [image, setImage] = useState(null);
 	const [editor, setEditor] = useState(null);
 
@@ -27,16 +28,12 @@ const SettingModal = ({ closeModal }) => {
 		}
 	};
 
-	const onSave = () => {
+	const onSave = async () => {
 		if (editor) {
-			// This returns a canvas element
 			const canvas = editor.getImageScaledToCanvas();
-			canvas.toBlob((blob) => {
-				// You can now use this blob to upload somewhere or use as an image src
-				console.log(blob);
-				// Example: Upload the blob
-				// uploadImage(blob);
-			});
+			const base64Img = canvas.toDataURL();
+			const { data, status } = await uploadAvatarApi({ image: base64Img, email });
+			console.log(data, status);
 		}
 	};
 
@@ -84,7 +81,7 @@ const SettingModal = ({ closeModal }) => {
 						onClick={onSave}
 						className="rounded-lg px-3 py-2 text-sm border-black/10 border hover:bg-slate-200/40"
 					>
-						Save
+						Upload
 					</button>
 				</div>
 			</div>
@@ -94,6 +91,7 @@ const SettingModal = ({ closeModal }) => {
 
 SettingModal.propTypes = {
 	closeModal: PropTypes.func.isRequired,
+	email: PropTypes.string.isRequired,
 };
 
 export default SettingModal;
