@@ -18,10 +18,10 @@ function App() {
 
 	return (
 		<AuthProvider>
-			<ToastContainer position="top-right" />
-			<Router>
-				<Routes>
-					<ChatProvider>
+			<ChatProvider>
+				<ToastContainer position="top-right" />
+				<Router>
+					<Routes>
 						<Route element={<RequireAuth />}>
 							<Route path="/" element={<Sidebar isSidebarOpen={isSidebarOpen} />}>
 								<Route
@@ -37,11 +37,11 @@ function App() {
 								{/* <Route path="/chats/:id" element={<ChatsPage />} /> */}
 							</Route>
 						</Route>
-					</ChatProvider>
-					<Route path="/login" element={<LoginPage />} />
-					<Route path="/signup" element={<SignupPage />} />
-				</Routes>
-			</Router>
+						<Route path="/login" element={<LoginPage />} />
+						<Route path="/signup" element={<SignupPage />} />
+					</Routes>
+				</Router>
+			</ChatProvider>
 		</AuthProvider>
 	);
 }
