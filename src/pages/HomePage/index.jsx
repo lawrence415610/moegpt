@@ -131,8 +131,10 @@ const HomePage = () => {
 								Profile Settings
 								{showSetting ? (
 									<SettingModal
-										closeModal={() => setShowSetting(false)}
-										email={user.email}
+										closeModal={() => {
+											setShowSetting(false);
+											setToolbox(false);
+										}}
 									/>
 								) : (
 									''

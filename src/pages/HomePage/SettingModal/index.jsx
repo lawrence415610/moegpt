@@ -4,9 +4,12 @@ import Dropzone from 'react-dropzone';
 import PropTypes from 'prop-types';
 import Modal from '../../../components/Modal';
 import { uploadAvatarApi } from '../../../apis';
+import { toast } from 'react-toastify';
 import { GoGear } from 'react-icons/go';
+import AuthContext from '../../../context';
 
-const SettingModal = ({ closeModal, email }) => {
+const SettingModal = ({ closeModal }) => {
+	const { state, dispatch } = AuthContext();
 	const [image, setImage] = useState(null);
 	const [editor, setEditor] = useState(null);
 
@@ -30,10 +33,34 @@ const SettingModal = ({ closeModal, email }) => {
 
 	const onSave = async () => {
 		if (editor) {
-			const canvas = editor.getImageScaledToCanvas();
-			const base64Img = canvas.toDataURL();
-			const { data, status } = await uploadAvatarApi({ image: base64Img, email });
-			console.log(data, status);
+			try {
+				const canvas = editor.getImageScaledToCanvas();
+				const base64Img = canvas.toDataURL();
+				const { data, status } = await uploadAvatarApi({
+					image: base64Img,
+					email: state.user.email,
+				});
+
+				if (status === 200) {
+					dispatch({
+						type: 'AVATAR',
+						payload: { avatar: data.avatar },
+					});
+
+					const user = JSON.parse(window.localStorage.getItem('user'));
+					window.localStorage.setItem(
+						'user',
+						JSON.stringify({ ...user, avatar: data.avatar })
+					);
+
+					toast.success('Upload successfully!');
+				} else {
+					toast.error('Upload failed');
+				}
+				closeModal();
+			} catch (err) {
+				toast.error(err.response.data);
+			}
 		}
 	};
 
@@ -91,7 +118,6 @@ const SettingModal = ({ closeModal, email }) => {
 
 SettingModal.propTypes = {
 	closeModal: PropTypes.func.isRequired,
-	email: PropTypes.string.isRequired,
 };
 
 export default SettingModal;
