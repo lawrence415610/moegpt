@@ -82,3 +82,15 @@ export const sendMessageApi = async (message, userId, chatsId) => {
 		console.log('error happened when trying to send message to GPT-3.5, Error Msg: ', err);
 	}
 };
+
+export const getChatsApi = async () => {
+	try {
+		const { data } = await axios.get('/chats', {
+			withCredentials: true,
+			credentials: 'include',
+		});
+		return data;
+	} catch (err) {
+		console.log('error happened when trying to get chats records, Error Msg: ', err);
+	}
+};
