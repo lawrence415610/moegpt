@@ -2,11 +2,11 @@ import { useState, useCallback } from 'react';
 import AvatarEditor from 'react-avatar-editor';
 import Dropzone from 'react-dropzone';
 import PropTypes from 'prop-types';
-import Modal from '../../../components/Modal';
-import { uploadAvatarApi } from '../../../apis';
+import Modal from '../Modal';
+import { uploadAvatarApi } from '../../apis';
 import { toast } from 'react-toastify';
 import { GoGear } from 'react-icons/go';
-import AuthContext from '../../../context';
+import AuthContext from '../../context/auth';
 
 const SettingModal = ({ closeModal }) => {
 	const { state, dispatch } = AuthContext();
