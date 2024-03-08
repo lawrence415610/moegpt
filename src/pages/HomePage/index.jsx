@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { sendMessageApi } from '../../apis';
 import SettingModal from './SettingModal';
+import { Tooltip } from 'react-tooltip';
 
 const HomePage = () => {
 	const maxTextAreaHeight = 200;
@@ -101,10 +102,13 @@ const HomePage = () => {
 						<a
 							className="text-white flex px-2 items-center gap-2 rounded-lg h-10 hover:bg-neutral-800"
 							href="/"
+							data-tooltip-id="logo-tooltip"
+							data-tooltip-content="Best GPT APP EVER"
 						>
 							<img className="h-10 w-10" src={Logo} />
 							MoeGPT
 						</a>
+						<Tooltip id="logo-tooltip" style={{ fontSize: '12px' }} />
 					</div>
 
 					<div className="flex flex-col gap-2">
