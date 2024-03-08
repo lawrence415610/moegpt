@@ -1,4 +1,4 @@
-import AuthContext from '../../context/auth';
+import AuthContext from '../../context';
 import PropTypes from 'prop-types';
 
 const Avatar = ({ src }) => {

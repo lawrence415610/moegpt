@@ -1,23 +1,24 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import Logo from '../assets/logo.png';
 import { GoGear } from 'react-icons/go';
 import { MdOutlineLogout } from 'react-icons/md';
-import HistoryRecord from '../components/HistoryRecord';
+import ChatTab from '../components/ChatTab';
 import Avatar from '../components/Avatar';
-import AuthContext from '../context/auth';
+import AuthContext from '../context';
 import { logoutApi } from '../apis';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import SettingModal from '../components/SettingModal';
+import { TbLayoutSidebarLeftCollapseFilled } from 'react-icons/tb';
+import { TbLayoutSidebarLeftExpandFilled } from 'react-icons/tb';
 
-const Sidebar = ({ isSidebarOpen = true }) => {
-	const [titleText, setTitleText] = useState('Who are you?');
+const Sidebar = () => {
 	const [toolbox, setToolbox] = useState(false);
 	const [showSetting, setShowSetting] = useState(false);
+	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 	const { state, dispatch } = AuthContext();
-	const user = state.user;
+	const { user, chats } = state;
 	const navigate = useNavigate();
 
 	const toolboxHandler = () => {
@@ -46,7 +47,6 @@ const Sidebar = ({ isSidebarOpen = true }) => {
 		} catch (err) {
 			toast.error(err);
 		}
-		window.location.replace('/login');
 		navigate('/login', { replace: true });
 	};
 
@@ -67,15 +67,16 @@ const Sidebar = ({ isSidebarOpen = true }) => {
 							MoeGPT
 						</Link>
 					</div>
-					{/* TODO: add a list of history records, based on data */}
+
 					<div className="flex flex-col gap-2">
 						<div className="overflow-y-auto h-[80vh]">
 							<h3 className="h-9 pb-2 pt-3 px-2 text-dark-grey text-xs">Today</h3>
 							<ol className="text-light-grey">
-								<HistoryRecord
-									titleText={titleText}
-									changeHandler={(e) => setTitleText(e.target.value)}
-								/>
+								{!chats && <p>No previous chat.</p>}
+								{chats &&
+									chats.map((chat, index) => (
+										<ChatTab key={index} id={chat._id} name={chat.name} />
+									))}
 							</ol>
 						</div>
 					</div>
@@ -119,13 +120,31 @@ const Sidebar = ({ isSidebarOpen = true }) => {
 					</div>
 				</div>
 			</nav>
-			<Outlet />
+			<div className={`h-full flex-1 ${isSidebarOpen ? 'w-[calc(100%-16rem)]' : 'w-full'}`}>
+				<header className="fixed p-3">
+					{isSidebarOpen && (
+						<TbLayoutSidebarLeftCollapseFilled
+							size="1.5em"
+							className="hover:text-gray-500 cursor-pointer"
+							onClick={() => {
+								setIsSidebarOpen(false);
+							}}
+						/>
+					)}
+					{!isSidebarOpen && (
+						<TbLayoutSidebarLeftExpandFilled
+							size="1.5em"
+							className="hover:text-gray-500 cursor-pointer"
+							onClick={() => {
+								setIsSidebarOpen(true);
+							}}
+						/>
+					)}
+				</header>
+				<Outlet />
+			</div>
 		</div>
 	);
-};
-
-Sidebar.propTypes = {
-	isSidebarOpen: PropTypes.bool.isRequired,
 };
 
 export default Sidebar;

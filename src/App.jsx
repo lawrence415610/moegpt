@@ -1,6 +1,5 @@
 import './App.css';
-import { useState } from 'react';
-import { AuthProvider } from './context/auth';
+import { AuthProvider } from './context';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -9,39 +8,23 @@ import SignupPage from './pages/SignupPage';
 import HomePage from './pages/HomePage';
 import RequireAuth from './components/RequireAuth';
 import Sidebar from './layouts/Sidebar';
-import { ChatProvider } from './context/chats';
+import ChatsPage from './pages/ChatsPage';
 function App() {
-	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-	const toggleSidebar = () => {
-		setIsSidebarOpen(!isSidebarOpen);
-	};
-
 	return (
 		<AuthProvider>
-			<ChatProvider>
-				<ToastContainer position="top-right" />
-				<Router>
-					<Routes>
-						<Route element={<RequireAuth />}>
-							<Route path="/" element={<Sidebar isSidebarOpen={isSidebarOpen} />}>
-								<Route
-									path="/"
-									element={
-										<HomePage
-											isSidebarOpen={isSidebarOpen}
-											sidebarHandler={toggleSidebar}
-										/>
-									}
-									exact
-								/>
-								{/* <Route path="/chats/:id" element={<ChatsPage />} /> */}
-							</Route>
+			<ToastContainer position="top-right" />
+			<Router>
+				<Routes>
+					<Route element={<RequireAuth />}>
+						<Route path="/" element={<Sidebar />}>
+							<Route path="/" element={<HomePage />} exact />
+							<Route path="/chats/:id" element={<ChatsPage />} />
 						</Route>
-						<Route path="/login" element={<LoginPage />} />
-						<Route path="/signup" element={<SignupPage />} />
-					</Routes>
-				</Router>
-			</ChatProvider>
+					</Route>
+					<Route path="/login" element={<LoginPage />} />
+					<Route path="/signup" element={<SignupPage />} />
+				</Routes>
+			</Router>
 		</AuthProvider>
 	);
 }

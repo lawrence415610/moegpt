@@ -70,11 +70,12 @@ export const logoutApi = async () => {
 };
 
 // chat features
-export const sendMessageApi = async (message, userId, chatsId) => {
+export const sendMessageApi = async (message, userId, name, chatsId) => {
 	try {
 		const { data } = await axios.post('/gpt-response', {
 			message,
 			userId,
+			name,
 			chatsId,
 		});
 		return data;

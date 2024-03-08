@@ -12,12 +12,15 @@ const rootReducer = (state, action) => {
 			return { ...state, user: { ...state.user, ...action.payload } };
 		case 'LOGOUT':
 			return { ...state, user: null };
+		case 'GET_CHATS':
+			return { ...state, chats: action.payload };
 		default:
 			return state;
 	}
 };
 const initialState = {
 	user: null,
+	chats: [],
 };
 
 export const AuthProvider = ({ children }) => {

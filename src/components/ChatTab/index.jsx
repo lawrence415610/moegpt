@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import DeleteModal from '../DeleteModal';
 import { FiEdit2 } from 'react-icons/fi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
-const HistoryRecord = ({ titleText, changeHandler, id }) => {
+const ChatTab = ({ id, name }) => {
 	const [isEdit, setIsEdit] = useState(false);
 	const [isDelete, setIsDelete] = useState(false);
+	const [titleText, setTitleText] = useState(name);
 	const titleRef = useRef(null);
 
 	useEffect(() => {
@@ -15,6 +16,10 @@ const HistoryRecord = ({ titleText, changeHandler, id }) => {
 			titleRef.current.focus();
 		}
 	}, [isEdit]);
+
+	const handleTitleChange = (e) => {
+		setTitleText(e.target.value);
+	};
 
 	return (
 		<>
@@ -24,18 +29,18 @@ const HistoryRecord = ({ titleText, changeHandler, id }) => {
 						<input
 							className="grow bg-neutral-800 outline-none border-2 border-transparent focus:border-solid  focus:border-indigo-600"
 							value={titleText}
-							onChange={changeHandler}
+							onChange={handleTitleChange}
 							onBlur={() => setIsEdit(false)}
 							ref={titleRef}
 						></input>
 					</div>
 				) : (
-					<Link
+					<NavLink
 						className="p-2 text-sm flex group-hover:bg-neutral-800 rounded-lg "
 						to={`chats/${id}`}
 					>
 						<div className="grow border-2 border-transparent">{titleText}</div>
-					</Link>
+					</NavLink>
 				)}
 
 				<div className="absolute bottom-0 right-0 top-0 pr-2 items-center gap-1.5 hidden group-hover:flex">
@@ -56,10 +61,9 @@ const HistoryRecord = ({ titleText, changeHandler, id }) => {
 	);
 };
 
-HistoryRecord.propTypes = {
-	titleText: PropTypes.string.isRequired,
-	changeHandler: PropTypes.func.isRequired,
+ChatTab.propTypes = {
 	id: PropTypes.string.isRequired,
+	name: PropTypes.string.isRequired,
 };
 
-export default HistoryRecord;
+export default ChatTab;
