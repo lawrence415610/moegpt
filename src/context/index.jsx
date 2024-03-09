@@ -1,10 +1,15 @@
 import { createContext, useContext, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { getCsrfTokenApi } from '../apis';
 
 const authContext = createContext();
 const rootReducer = (state, action) => {
+	const newTopics = state.chats.map((chat) => {
+		if (chat.id === action.payload._id) {
+			return action.payload;
+		}
+		return chat;
+	});
 	switch (action.type) {
 		case 'LOGIN':
 			return { ...state, user: action.payload };
@@ -14,6 +19,8 @@ const rootReducer = (state, action) => {
 			return { ...state, user: null };
 		case 'GET_CHATS':
 			return { ...state, chats: action.payload };
+		case 'ADD_CHAT':
+			return { ...state, chats: newTopics };
 		default:
 			return state;
 	}
@@ -58,17 +65,6 @@ export const AuthProvider = ({ children }) => {
 				return Promise.reject(error);
 			}
 		);
-
-		// csrf protection
-		const getCsrfToken = async () => {
-			try {
-				const data = await getCsrfTokenApi();
-				axios.defaults.headers['X-CSRF-Token'] = data.csrfToken;
-			} catch (err) {
-				throw new Error('Error happens when trying to get csrfToken, Error Msg: ' + err);
-			}
-		};
-		getCsrfToken();
 	}, []);
 	return (
 		<authContext.Provider

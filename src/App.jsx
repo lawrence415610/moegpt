@@ -8,7 +8,7 @@ import SignupPage from './pages/SignupPage';
 import HomePage from './pages/HomePage';
 import RequireAuth from './components/RequireAuth';
 import Sidebar from './layouts/Sidebar';
-import ChatsPage from './pages/ChatsPage';
+import TopicPage from './pages/TopicPage';
 function App() {
 	return (
 		<AuthProvider>
@@ -18,7 +18,7 @@ function App() {
 					<Route element={<RequireAuth />}>
 						<Route path="/" element={<Sidebar />}>
 							<Route path="/" element={<HomePage />} exact />
-							<Route path="/chats/:id" element={<ChatsPage />} />
+							<Route path="/chats/:id" element={<TopicPage />} />
 						</Route>
 					</Route>
 					<Route path="/login" element={<LoginPage />} />

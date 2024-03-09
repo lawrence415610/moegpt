@@ -2,17 +2,17 @@ import { useState, useRef, useEffect } from 'react';
 import Logo from '../assets/logo.png';
 import AuthContext from '../context';
 import { toast } from 'react-toastify';
-import { sendMessageApi } from '../apis';
-import { useNavigate } from 'react-router-dom';
+import { createNewTopicApi } from '../apis';
 import { getChatsApi } from '../apis';
+import { useNavigate } from 'react-router-dom';
 const HomePage = () => {
 	const maxTextAreaHeight = 200;
 	const textAreaRef = useRef(null);
 	const [inputText, setInputText] = useState('');
 	const [isTextAreaOverflow, setIsTextAreaOverflow] = useState(false);
 	const { state, dispatch } = AuthContext();
-	const user = state.user;
 	const navigate = useNavigate();
+	const user = state.user;
 
 	const changeHandler = (e) => {
 		setInputText(e.target.value);
@@ -22,12 +22,18 @@ const HomePage = () => {
 	const submitHandler = (e) => {
 		e.preventDefault();
 		if (!inputText) return;
-		sendMessageApi(inputText, user._id, inputText.slice(30))
+		createNewTopicApi(inputText, user._id)
 			.then((res) => {
-				console.log(res);
-				navigate(`/chats/${res[1]}`, {
-					replace: true,
-				});
+				if (res.id) {
+					getChatsApi().then((res) => {
+						dispatch({
+							type: 'GET_CHATS',
+							payload: res,
+						});
+					});
+				}
+				setInputText('');
+				navigate(`/chats/${res.id}`, { replace: true });
 			})
 			.catch((err) => {
 				toast.error(err);
