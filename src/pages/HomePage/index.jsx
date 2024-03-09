@@ -102,13 +102,12 @@ const HomePage = () => {
 						<a
 							className="text-white flex px-2 items-center gap-2 rounded-lg h-10 hover:bg-neutral-800"
 							href="/"
-							data-tooltip-id="logo-tooltip"
+							data-tooltip-id="tooltip"
 							data-tooltip-content="Best GPT APP EVER"
 						>
 							<img className="h-10 w-10" src={Logo} />
 							MoeGPT
 						</a>
-						<Tooltip id="logo-tooltip" style={{ fontSize: '12px' }} />
 					</div>
 
 					<div className="flex flex-col gap-2">
@@ -240,6 +239,16 @@ const HomePage = () => {
 					</div>
 				</main>
 			</div>
+			<Tooltip
+				id="tooltip"
+				style={{
+					fontSize: '12px',
+					borderRadius: '10px',
+					backgroundColor: 'black',
+					color: 'white',
+				}}
+				border="1px solid rgb(209 213 219)"
+			/>
 		</div>
 	);
 };

@@ -35,10 +35,20 @@ const HistoryRecord = ({ titleText, changeHandler }) => {
 				)}
 
 				<div className="absolute bottom-0 right-0 top-0 pr-2 items-center gap-1.5 hidden group-hover:flex">
-					<button className="hover:translate-y-0.5" onClick={() => setIsEdit(true)}>
+					<button
+						className="hover:translate-y-0.5"
+						onClick={() => setIsEdit(true)}
+						data-tooltip-id="tooltip"
+						data-tooltip-content="Rename"
+					>
 						<FiEdit2 />
 					</button>
-					<button className="hover:text-rose-600" onClick={() => setIsDelete(true)}>
+					<button
+						className="hover:text-rose-600"
+						onClick={() => setIsDelete(true)}
+						data-tooltip-id="tooltip"
+						data-tooltip-content="Delete"
+					>
 						<RiDeleteBin6Line />
 					</button>
 				</div>
