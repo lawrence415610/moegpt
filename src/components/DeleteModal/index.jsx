@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import Modal from '../../../../components/Modal';
+import Modal from '../Modal';
 
 const DeleteModal = ({ titleText, closeModal }) => {
 	return (

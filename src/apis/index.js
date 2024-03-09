@@ -4,17 +4,6 @@ const baseUrl = 'http://localhost:5555/api';
 axios.defaults.baseURL = baseUrl;
 
 // Auth features
-export const getCsrfTokenApi = async () => {
-	try {
-		const { data } = await axios.get('/csrf-token', {
-			withCredentials: true,
-			credentials: 'include',
-		});
-		return data;
-	} catch (err) {
-		console.log('error happened when trying to get csrf token, Error Msg: ', err);
-	}
-};
 
 export const getCurrentUserApi = async () => {
 	try {
@@ -70,14 +59,39 @@ export const logoutApi = async () => {
 };
 
 // chat features
-export const sendMessageApi = async (message) => {
+export const createNewTopicApi = async (message, userId) => {
 	try {
-		const { data } = await axios.post('/gpt-response', {
+		const { data } = await axios.post('/create-new-topic', {
 			message,
+			userId,
 		});
 		return data;
 	} catch (err) {
 		console.log('error happened when trying to send message to GPT-3.5, Error Msg: ', err);
+	}
+};
+
+export const addNewChat = async (message, chatsId) => {
+	try {
+		const { data } = await axios.post('/add-new-chat', {
+			message,
+			chatsId,
+		});
+		return data;
+	} catch (err) {
+		console.log('error happened when trying to send message to GPT-3.5, Error Msg: ', err);
+	}
+};
+
+export const getChatsApi = async () => {
+	try {
+		const { data } = await axios.get('/chats', {
+			withCredentials: true,
+			credentials: 'include',
+		});
+		return data;
+	} catch (err) {
+		console.log('error happened when trying to get chats records, Error Msg: ', err);
 	}
 };
 
