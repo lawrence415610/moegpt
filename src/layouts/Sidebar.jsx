@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import SettingModal from '../components/SettingModal';
 import { TbLayoutSidebarLeftCollapseFilled } from 'react-icons/tb';
 import { TbLayoutSidebarLeftExpandFilled } from 'react-icons/tb';
+import { Tooltip } from 'react-tooltip';
 
 const Sidebar = () => {
 	const [toolbox, setToolbox] = useState(false);
@@ -143,6 +144,16 @@ const Sidebar = () => {
 				</header>
 				<Outlet />
 			</div>
+			<Tooltip
+				id="tooltip"
+				style={{
+					fontSize: '12px',
+					borderRadius: '10px',
+					backgroundColor: 'black',
+					color: 'white',
+				}}
+				border="1px solid rgb(209 213 219)"
+			/>
 		</div>
 	);
 };
