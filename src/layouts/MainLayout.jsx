@@ -53,7 +53,7 @@ const MainLayout = () => {
 	};
 
 	return (
-		<div className="flex h-screen w-screen">
+		<div className="body-font flex h-screen w-screen">
 			{/* Sidebar Section */}
 			<nav
 				className={`bg-black w-64 px-3 py-3.5 h-full ${
@@ -63,7 +63,7 @@ const MainLayout = () => {
 				<div>
 					<div>
 						<Link
-							className="text-white flex px-2 items-center justify-between gap-2 h-10 hover:bg-neutral-800"
+							className="flex px-2 items-center justify-between gap-2 h-10 hover:bg-neutral-800"
 							to="/"
 						>
 							<div className="flex items-center">
@@ -83,7 +83,7 @@ const MainLayout = () => {
 					<div className="flex flex-col gap-2">
 						<div className="overflow-y-auto h-[80vh]">
 							<h3 className="h-9 pb-2 pt-3 px-2 text-dark-grey text-xs">Today</h3>
-							<ol className="text-light-grey">
+							<ol>
 								{!chats && <p>No previous chat.</p>}
 								{chats &&
 									chats.map((chat, index) => (
@@ -160,7 +160,7 @@ const MainLayout = () => {
 					)}
 				</header>
 				{/* Header Section END */}
-				<main className="body-font w-full h-full flex flex-col">
+				<main className="w-full h-full flex flex-col">
 					{/* Main page Section */}
 					<Outlet />
 					{/* Main page Section END */}
