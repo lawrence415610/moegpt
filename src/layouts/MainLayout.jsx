@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import Logo from '../assets/logo.png';
+import Logo from '/logo.png';
 import { GoGear } from 'react-icons/go';
 import { MdOutlineLogout } from 'react-icons/md';
 import ChatTab from '../components/ChatTab';
@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import SettingModal from '../components/SettingModal';
 import { TbLayoutSidebarLeftCollapseFilled } from 'react-icons/tb';
 import { TbLayoutSidebarLeftExpandFilled } from 'react-icons/tb';
+import { CgAddR } from 'react-icons/cg';
 import { Tooltip } from 'react-tooltip';
 
 const MainLayout = () => {
@@ -62,11 +63,20 @@ const MainLayout = () => {
 				<div>
 					<div>
 						<Link
-							className="text-white flex px-2 items-center gap-2 rounded-lg h-10 hover:bg-neutral-800"
+							className="text-white flex px-2 items-center justify-between gap-2 h-10 hover:bg-neutral-800"
 							to="/"
 						>
-							<img className="h-10 w-10" src={Logo} />
-							MoeGPT
+							<div className="flex items-center">
+								<img className="h-10 w-10 rounded-full" src={Logo} />
+								<span className="mt-1 ml-3">MoeGPT</span>
+							</div>
+							<div>
+								<CgAddR
+									className="size-5"
+									data-tooltip-id="tooltip"
+									data-tooltip-content="Start a new chat here."
+								/>
+							</div>
 						</Link>
 					</div>
 
@@ -124,7 +134,11 @@ const MainLayout = () => {
 			</nav>
 			{/* Sidebar Section END */}
 			{/* Header Section */}
-			<div className={`h-full flex-1 ${isSidebarOpen ? 'w-[calc(100%-16rem)]' : 'w-full'}`}>
+			<div
+				className={`h-full bg-gray-900 flex-1 ${
+					isSidebarOpen ? 'w-[calc(100%-16rem)]' : 'w-full'
+				}`}
+			>
 				<header className="fixed p-3">
 					{isSidebarOpen && (
 						<TbLayoutSidebarLeftCollapseFilled
@@ -150,8 +164,8 @@ const MainLayout = () => {
 					{/* Main page Section */}
 					<Outlet />
 					{/* Main page Section END */}
-					<footer className="text-center text-xs text-gray-600 px-2 py-2">
-						MoeGPT can make mistakes. Consider checking important information.
+					<footer className="text-center text-xs px-2 py-2">
+						Made by Heaven © Programming Dojo 2024
 					</footer>
 				</main>
 			</div>

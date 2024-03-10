@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import Logo from '../assets/logo.png';
+import Logo from '/logo.png';
 import AuthContext from '../context';
 import { toast } from 'react-toastify';
 import { createNewTopicApi } from '../apis';
@@ -45,7 +45,7 @@ const HomePage = () => {
 	return (
 		<>
 			<div className="flex flex-1 items-center justify-center flex-col">
-				<img className="h-20 w-20 mb-3" src={Logo} />
+				<img className="h-20 w-20 mb-3 rounded-full" src={Logo} />
 				<div className="text-2xl  font-medium mb-4">How can I help you today?</div>
 			</div>
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Logo from '../assets/logo.png';
+import Logo from '/logo.png';
 import Message from '../components/Message';
 import { toast } from 'react-toastify';
 import { addNewChat, getChatsApi } from '../apis';

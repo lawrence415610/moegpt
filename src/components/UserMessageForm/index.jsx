@@ -22,7 +22,7 @@ const UserMessageForm = ({ submitHandler }) => {
 
 	return (
 		<form className="gap-3 m-auto max-w-3xl" onSubmit={submitHandler}>
-			<div className="bg-white border border-gray-300 rounded-2xl flex relative">
+			<div className="border border-gray-300 rounded-2xl flex relative">
 				<textarea
 					placeholder="Message MoeGPT..."
 					rows={1}
@@ -36,7 +36,7 @@ const UserMessageForm = ({ submitHandler }) => {
 					value={inputText}
 				></textarea>
 				<button
-					className="w-7 h-7 absolute bottom-3 right-3 text-white bg-black rounded-lg disabled:text-gray-400 disabled:bg-white"
+					className="w-7 h-7 absolute bottom-3 right-3 text-black bg-white disabled:text-gray-400 disabled:bg-black rounded-lg "
 					disabled={!inputText}
 				>
 					&uarr;

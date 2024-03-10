@@ -1,4 +1,3 @@
-import './App.css';
 import { AuthProvider } from './context';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-tooltip/dist/react-tooltip.css';

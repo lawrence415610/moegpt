@@ -36,7 +36,7 @@ const ChatTab = ({ id, name }) => {
 					</div>
 				) : (
 					<NavLink
-						className="p-2 text-sm flex group-hover:bg-neutral-800 rounded-lg "
+						className="p-2 text-sm flex rounded-lg group-hover:bg-neutral-800 group-hover:bg-gradient-to-r group-hover:text-transparent bg-clip-text from-white"
 						to={`chats/${id}`}
 					>
 						<div className="grow border-2 border-transparent">{titleText}</div>
