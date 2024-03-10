@@ -139,7 +139,7 @@ const MainLayout = () => {
 					isSidebarOpen ? 'w-[calc(100%-16rem)]' : 'w-full'
 				}`}
 			>
-				<header className="fixed p-[21px]">
+				<header className="fixed pt-[22px] pl-[18px]">
 					{isSidebarOpen && (
 						<TbLayoutSidebarLeftCollapseFilled
 							size="1.5em"
