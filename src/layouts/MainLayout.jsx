@@ -14,7 +14,7 @@ import { TbLayoutSidebarLeftCollapseFilled } from 'react-icons/tb';
 import { TbLayoutSidebarLeftExpandFilled } from 'react-icons/tb';
 import { Tooltip } from 'react-tooltip';
 
-const Sidebar = () => {
+const MainLayout = () => {
 	const [toolbox, setToolbox] = useState(false);
 	const [showSetting, setShowSetting] = useState(false);
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -53,6 +53,7 @@ const Sidebar = () => {
 
 	return (
 		<div className="flex h-screen w-screen">
+			{/* Sidebar Section */}
 			<nav
 				className={`bg-black w-64 px-3 py-3.5 h-full ${
 					isSidebarOpen ? '' : 'hidden'
@@ -121,6 +122,8 @@ const Sidebar = () => {
 					</div>
 				</div>
 			</nav>
+			{/* Sidebar Section END */}
+			{/* Header Section */}
 			<div className={`h-full flex-1 ${isSidebarOpen ? 'w-[calc(100%-16rem)]' : 'w-full'}`}>
 				<header className="fixed p-3">
 					{isSidebarOpen && (
@@ -142,7 +145,15 @@ const Sidebar = () => {
 						/>
 					)}
 				</header>
-				<Outlet />
+				{/* Header Section END */}
+				<main className="w-full h-full flex flex-col">
+					{/* Main page Section */}
+					<Outlet />
+					{/* Main page Section END */}
+					<footer className="text-center text-xs text-gray-600 px-2 py-2">
+						MoeGPT can make mistakes. Consider checking important information.
+					</footer>
+				</main>
 			</div>
 			<Tooltip
 				id="tooltip"
@@ -158,4 +169,4 @@ const Sidebar = () => {
 	);
 };
 
-export default Sidebar;
+export default MainLayout;
