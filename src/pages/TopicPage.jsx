@@ -45,7 +45,7 @@ const TopicPage = () => {
 	return (
 		<>
 			<div className="flex-1 overflow-hidden">
-				<div className="h-full overflow-auto m-14">
+				<div className="h-full overflow-auto p-10">
 					{chatSessions.map(({ userMsg, gptMsg }, index) => {
 						return (
 							<article key={index}>
