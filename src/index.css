@@ -5,22 +5,22 @@
 @layer components {
 	/* For all h1 titles */
 	.big-title-font {
-		@apply text-black text-3xl text-center font-mono;
+		@apply text-light-grey text-2xl text-center font-mono;
 	}
 	/* For all body text */
 	.body-font {
-		@apply text-black text-sm font-sans;
+		@apply text-light-grey font-sans;
 	}
 
 	.input-field {
 		@apply min-w-56 h-8 block border rounded-sm border-slate-300 pl-2 focus:ring-1 focus:outline-none focus:border-emerald-500 tracking-wide;
 	}
 	.primary-btn {
-		@apply bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-4 rounded;
+		@apply bg-emerald-500 hover:bg-emerald-600 text-light-grey font-bold py-2 px-4 rounded;
 	}
 	/* For all clickable items */
 	.item-box {
-		@apply text-white flex px-2 items-center gap-2 rounded-lg h-12 hover:bg-neutral-800 select-none cursor-pointer;
+		@apply text-light-grey flex px-2 items-center gap-2 rounded-lg h-12 hover:bg-neutral-800 select-none cursor-pointer;
 	}
 }
 
@@ -42,8 +42,4 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
 	background: #555;
-}
-
-body {
-	color: #d9d9e3;
 }

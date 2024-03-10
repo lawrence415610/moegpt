@@ -45,7 +45,7 @@ const HomePage = () => {
 		<>
 			<div className="flex flex-1 items-center justify-center flex-col">
 				<img className="h-20 w-20 mb-3 rounded-full" src={Logo} />
-				<div className="text-2xl  font-medium mb-4">How can I help you today?</div>
+				<div className="big-title-font mb-4">How can I help you today?</div>
 			</div>
 
 			<div className="w-full pt-2">

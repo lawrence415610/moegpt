@@ -160,7 +160,7 @@ const MainLayout = () => {
 					)}
 				</header>
 				{/* Header Section END */}
-				<main className="w-full h-full flex flex-col">
+				<main className="body-font w-full h-full flex flex-col">
 					{/* Main page Section */}
 					<Outlet />
 					{/* Main page Section END */}
