@@ -25,7 +25,6 @@ const HomePage = () => {
 						});
 					});
 				}
-				e.target[0].value = '';
 				navigate(`/chats/${res.id}`, { replace: true });
 			})
 			.catch((err) => {
