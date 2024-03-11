@@ -74,7 +74,7 @@ const ChatTab = ({ id, name }) => {
 				</div>
 			</li>
 			{isDelete ? (
-				<DeleteModal titleText={titleText} closeModal={() => setIsDelete(false)} />
+				<DeleteModal id={id} titleText={titleText} closeModal={() => setIsDelete(false)} />
 			) : (
 				<></>
 			)}

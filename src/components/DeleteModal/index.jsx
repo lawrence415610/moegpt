@@ -1,7 +1,25 @@
 import PropTypes from 'prop-types';
 import Modal from '../Modal';
+import { deleteTopicApi, getChatsApi } from '../../apis';
+import AuthContext from '../../context';
+import { useNavigate } from 'react-router-dom';
 
-const DeleteModal = ({ titleText, closeModal }) => {
+const DeleteModal = ({ id, titleText, closeModal }) => {
+	const navigate = useNavigate();
+	const { dispatch } = AuthContext();
+	const deleteHandler = async () => {
+		const res = await deleteTopicApi(id);
+		if (res.ok) {
+			getChatsApi().then((res) => {
+				dispatch({
+					type: 'GET_CHATS',
+					payload: res,
+				});
+			});
+		}
+		closeModal();
+		if (window.location.pathname === `/chats/${id}`) navigate('/');
+	};
 	return (
 		<Modal title="Delete chat?" closeModal={() => closeModal()}>
 			<div className="flex flex-col p-4 h-full">
@@ -11,7 +29,7 @@ const DeleteModal = ({ titleText, closeModal }) => {
 				<div className="grow flex gap-3 flex-row-reverse mt-5">
 					<button
 						className="bg-rose-700 text-white rounded-lg px-3 py-2 text-sm hover:bg-rose-900"
-						onClick={closeModal}
+						onClick={deleteHandler}
 					>
 						Delete
 					</button>
@@ -30,6 +48,7 @@ const DeleteModal = ({ titleText, closeModal }) => {
 DeleteModal.propTypes = {
 	titleText: PropTypes.string.isRequired,
 	closeModal: PropTypes.func.isRequired,
+	id: PropTypes.string.isRequired,
 };
 
 export default DeleteModal;

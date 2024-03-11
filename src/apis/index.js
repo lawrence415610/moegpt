@@ -107,6 +107,17 @@ export const editTopicNameApi = async (chatsId, name) => {
 	}
 };
 
+export const deleteTopicApi = async (chatsId) => {
+	try {
+		const { data } = await axios.delete('/delete-topic', {
+			params: { chatsId },
+		});
+		return data;
+	} catch (err) {
+		console.log('error happened when trying to delete topic, Error Msg: ', err);
+	}
+};
+
 // settings
 export const uploadAvatarApi = async ({ image, email }) => {
 	try {
