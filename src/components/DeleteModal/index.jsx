@@ -2,19 +2,23 @@ import PropTypes from 'prop-types';
 import Modal from '../Modal';
 import { deleteTopicApi, getChatsApi } from '../../apis';
 import AuthContext from '../../context';
+import { useNavigate } from 'react-router-dom';
 
 const DeleteModal = ({ id, titleText, closeModal }) => {
+	const navigate = useNavigate();
 	const { dispatch } = AuthContext();
-	const deleteHandler = () => {
-		const res = deleteTopicApi(id);
-		console.log(res);
-		getChatsApi().then((res) => {
-			dispatch({
-				type: 'GET_CHATS',
-				payload: res,
+	const deleteHandler = async () => {
+		const res = await deleteTopicApi(id);
+		if (res.ok) {
+			getChatsApi().then((res) => {
+				dispatch({
+					type: 'GET_CHATS',
+					payload: res,
+				});
 			});
-		});
+		}
 		closeModal();
+		if (window.location.pathname === `/chats/${id}`) navigate('/');
 	};
 	return (
 		<Modal title="Delete chat?" closeModal={() => closeModal()}>
