@@ -20,9 +20,12 @@ const ChatTab = ({ id, name }) => {
 
 	const handleTitleChange = async (e) => {
 		setTitleText(e.target.value);
-		const newTitle = await editTopicNameApi(id, name);
-		console.log(newTitle);
+	};
+
+	const submitTitleChange = async () => {
+		const newTitle = await editTopicNameApi(id, titleText);
 		setTitleText(newTitle);
+		setIsEdit(false);
 	};
 
 	return (
@@ -34,7 +37,7 @@ const ChatTab = ({ id, name }) => {
 							className="grow bg-neutral-800 outline-none border-2 border-transparent focus:border-solid  focus:border-emerald-500"
 							value={titleText}
 							onChange={handleTitleChange}
-							onBlur={() => setIsEdit(false)}
+							onBlur={submitTitleChange}
 							ref={titleRef}
 						></input>
 					</div>
