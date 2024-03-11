@@ -31,7 +31,7 @@ const ChatTab = ({ id, name }) => {
 				{isEdit ? (
 					<div className="p-2 text-sm bg-neutral-800 rounded-lg">
 						<input
-							className="grow bg-neutral-800 outline-none border-2 border-transparent focus:border-solid  focus:border-indigo-600"
+							className="grow bg-neutral-800 outline-none border-2 border-transparent focus:border-solid  focus:border-emerald-500"
 							value={titleText}
 							onChange={handleTitleChange}
 							onBlur={() => setIsEdit(false)}
@@ -40,7 +40,11 @@ const ChatTab = ({ id, name }) => {
 					</div>
 				) : (
 					<NavLink
-						className="p-2 text-sm flex group-hover:bg-neutral-800 rounded-lg "
+						className={({ isActive }) =>
+							`p-2 text-sm flex rounded-lg group-hover:bg-neutral-800 group-hover:bg-gradient-to-r group-hover:text-transparent bg-clip-text from-emerald-500 ${
+								isActive ? 'text-emerald-500 font-semibold' : ''
+							} `
+						}
 						to={`chats/${id}`}
 					>
 						<div className="grow border-2 border-transparent">{titleText}</div>

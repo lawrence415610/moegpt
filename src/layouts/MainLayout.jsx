@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import Logo from '../assets/logo.png';
+import Logo from '/logo.png';
 import { GoGear } from 'react-icons/go';
 import { MdOutlineLogout } from 'react-icons/md';
 import ChatTab from '../components/ChatTab';
@@ -12,9 +12,10 @@ import { Link } from 'react-router-dom';
 import SettingModal from '../components/SettingModal';
 import { TbLayoutSidebarLeftCollapseFilled } from 'react-icons/tb';
 import { TbLayoutSidebarLeftExpandFilled } from 'react-icons/tb';
+import { CgAddR } from 'react-icons/cg';
 import { Tooltip } from 'react-tooltip';
 
-const Sidebar = () => {
+const MainLayout = () => {
 	const [toolbox, setToolbox] = useState(false);
 	const [showSetting, setShowSetting] = useState(false);
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -52,7 +53,8 @@ const Sidebar = () => {
 	};
 
 	return (
-		<div className="flex h-screen w-screen">
+		<div className="body-font flex h-screen w-screen">
+			{/* Sidebar Section */}
 			<nav
 				className={`bg-black w-64 px-3 py-3.5 h-full ${
 					isSidebarOpen ? '' : 'hidden'
@@ -61,18 +63,27 @@ const Sidebar = () => {
 				<div>
 					<div>
 						<Link
-							className="text-white flex px-2 items-center gap-2 rounded-lg h-10 hover:bg-neutral-800"
+							className="flex px-2 items-center justify-between gap-2 h-10 hover:bg-neutral-800"
 							to="/"
 						>
-							<img className="h-10 w-10" src={Logo} />
-							MoeGPT
+							<div className="flex items-center">
+								<img className="h-10 w-10 rounded-full" src={Logo} />
+								<span className="mt-1 ml-3">MoeGPT</span>
+							</div>
+							<div>
+								<CgAddR
+									className="size-5"
+									data-tooltip-id="tooltip"
+									data-tooltip-content="Start a new chat here."
+								/>
+							</div>
 						</Link>
 					</div>
 
 					<div className="flex flex-col gap-2">
 						<div className="overflow-y-auto h-[80vh]">
 							<h3 className="h-9 pb-2 pt-3 px-2 text-dark-grey text-xs">Today</h3>
-							<ol className="text-light-grey">
+							<ol>
 								{!chats && <p>No previous chat.</p>}
 								{chats &&
 									chats.map((chat, index) => (
@@ -121,8 +132,14 @@ const Sidebar = () => {
 					</div>
 				</div>
 			</nav>
-			<div className={`h-full flex-1 ${isSidebarOpen ? 'w-[calc(100%-16rem)]' : 'w-full'}`}>
-				<header className="fixed p-3">
+			{/* Sidebar Section END */}
+			{/* Header Section */}
+			<div
+				className={`h-full bg-gray-900 flex-1 ${
+					isSidebarOpen ? 'w-[calc(100%-16rem)]' : 'w-full'
+				}`}
+			>
+				<header className="fixed pt-[22px] pl-[18px]">
 					{isSidebarOpen && (
 						<TbLayoutSidebarLeftCollapseFilled
 							size="1.5em"
@@ -142,7 +159,15 @@ const Sidebar = () => {
 						/>
 					)}
 				</header>
-				<Outlet />
+				{/* Header Section END */}
+				<main className="w-full h-full flex flex-col">
+					{/* Main page Section */}
+					<Outlet />
+					{/* Main page Section END */}
+					<footer className="text-center text-xs px-2 py-2">
+						Made by Heaven © Programming Dojo 2024
+					</footer>
+				</main>
 			</div>
 			<Tooltip
 				id="tooltip"
@@ -158,4 +183,4 @@ const Sidebar = () => {
 	);
 };
 
-export default Sidebar;
+export default MainLayout;

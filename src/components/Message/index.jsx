@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const ChatRecord = ({ profile, user, text }) => {
+const Message = ({ profile, user, text }) => {
 	return (
 		<div className="flex mx-auto max-w-3xl gap-3 py-2">
 			<div className="flex flex-shrink-0 flex-col ">
@@ -14,10 +14,10 @@ const ChatRecord = ({ profile, user, text }) => {
 	);
 };
 
-ChatRecord.propTypes = {
+Message.propTypes = {
 	profile: PropTypes.string.isRequired,
 	user: PropTypes.string.isRequired,
 	text: PropTypes.string.isRequired,
 };
 
-export default ChatRecord;
+export default Message;
