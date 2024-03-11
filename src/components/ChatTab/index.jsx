@@ -4,6 +4,7 @@ import DeleteModal from '../DeleteModal';
 import { FiEdit2 } from 'react-icons/fi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
+import { editTopicNameApi } from '../../apis';
 
 const ChatTab = ({ id, name }) => {
 	const [isEdit, setIsEdit] = useState(false);
@@ -17,8 +18,11 @@ const ChatTab = ({ id, name }) => {
 		}
 	}, [isEdit]);
 
-	const handleTitleChange = (e) => {
+	const handleTitleChange = async (e) => {
 		setTitleText(e.target.value);
+		const newTitle = await editTopicNameApi(id, name);
+		console.log(newTitle);
+		setTitleText(newTitle);
 	};
 
 	return (
