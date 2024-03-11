@@ -95,6 +95,18 @@ export const getChatsApi = async () => {
 	}
 };
 
+export const editTopicNameApi = async (chatsId, name) => {
+	try {
+		const { data } = await axios.post('/update-topic-name', {
+			chatsId,
+			name,
+		});
+		return data;
+	} catch (err) {
+		console.log('error happened when trying to edit topic name, Error Msg: ', err);
+	}
+};
+
 // settings
 export const uploadAvatarApi = async ({ image, email }) => {
 	try {
