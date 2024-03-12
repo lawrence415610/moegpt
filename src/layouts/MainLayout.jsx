@@ -86,8 +86,8 @@ const MainLayout = () => {
 							<ol>
 								{!chats && <p>No previous chat.</p>}
 								{chats &&
-									chats.map((chat, index) => (
-										<ChatTab key={index} id={chat._id} name={chat.name} />
+									chats.map((chat) => (
+										<ChatTab key={chat._id} id={chat._id} name={chat.name} />
 									))}
 							</ol>
 						</div>
