@@ -52,6 +52,39 @@ const MainLayout = () => {
 		navigate('/login', { replace: true });
 	};
 
+	const isWithinLastNDays = (dateString, days) => {
+		const date = new Date(dateString);
+		const now = new Date();
+		now.setHours(0, 0, 0, 0); // Normalize to start of today to include all of today's dates
+		const then = new Date(date);
+		then.setHours(0, 0, 0, 0); // Normalize comparison date
+		const diffTime = now - then;
+		const diffDays = diffTime / (1000 * 60 * 60 * 24);
+		return diffDays <= days;
+	};
+
+	const filterTodayChats = (chats) => {
+		const startOfToday = new Date();
+		startOfToday.setHours(0, 0, 0, 0);
+		return chats.filter((chat) => new Date(chat.updatedAt) >= startOfToday);
+	};
+
+	const filterPrevious7DaysChats = (chats) => {
+		return chats.filter(
+			(chat) => isWithinLastNDays(chat.updatedAt, 7) && !isWithinLastNDays(chat.updatedAt, 1)
+		);
+	};
+
+	const filterPrevious30DaysChats = (chats) => {
+		return chats.filter(
+			(chat) => isWithinLastNDays(chat.updatedAt, 30) && !isWithinLastNDays(chat.updatedAt, 7)
+		);
+	};
+
+	const filterMoreThan30DaysChats = (chats) => {
+		return chats.filter((chat) => !isWithinLastNDays(chat.updatedAt, 30));
+	};
+
 	return (
 		<div className="body-font flex h-screen w-screen">
 			{/* Sidebar Section */}
@@ -81,16 +114,62 @@ const MainLayout = () => {
 					</div>
 
 					<div className="flex flex-col gap-2">
-						<div className="overflow-y-auto h-[80vh]">
-							<h3 className="h-9 pb-2 pt-3 px-2 text-dark-grey text-xs">Today</h3>
-							<ol>
-								{!chats && <p>No previous chat.</p>}
-								{chats &&
-									chats.map((chat) => (
+						{/* Today */}
+						{filterTodayChats(chats).length === 0 && null}
+						{filterTodayChats(chats).length !== 0 && (
+							<div className="overflow-y-auto mt-5">
+								<h3 className="h-9 pb-2 pt-3 px-2 text-dark-grey text-xs">Today</h3>
+								<ol>
+									{filterTodayChats(chats).map((chat) => (
 										<ChatTab key={chat._id} id={chat._id} name={chat.name} />
 									))}
-							</ol>
-						</div>
+								</ol>
+							</div>
+						)}
+
+						{/* Previous 7 Days */}
+						{filterPrevious7DaysChats(chats).length === 0 && null}
+						{filterPrevious7DaysChats(chats).length !== 0 && (
+							<div className="overflow-y-auto mt-5">
+								<h3 className="h-9 pb-2 pt-3 px-2 text-dark-grey text-xs">
+									Previous 7 Days
+								</h3>
+								<ol>
+									{filterPrevious7DaysChats(chats).map((chat) => (
+										<ChatTab key={chat._id} id={chat._id} name={chat.name} />
+									))}
+								</ol>
+							</div>
+						)}
+						{/* Previous 30 Days */}
+						{filterPrevious30DaysChats(chats).length === 0 && null}
+						{filterPrevious30DaysChats(chats).length !== 0 && (
+							<div className="overflow-y-auto mt-5">
+								<h3 className="h-9 pb-2 pt-3 px-2 text-dark-grey text-xs">
+									Previous 30 Days
+								</h3>
+								<ol>
+									{filterPrevious30DaysChats(chats).map((chat) => (
+										<ChatTab key={chat._id} id={chat._id} name={chat.name} />
+									))}
+								</ol>
+							</div>
+						)}
+
+						{/* More Than 30 Days */}
+						{filterMoreThan30DaysChats(chats).length === 0 && null}
+						{filterMoreThan30DaysChats(chats).length !== 0 && (
+							<div className="overflow-y-auto mt-5">
+								<h3 className="h-9 pb-2 pt-3 px-2 text-dark-grey text-xs">
+									More Than 30 Days
+								</h3>
+								<ol>
+									{filterMoreThan30DaysChats(chats).map((chat) => (
+										<ChatTab key={chat._id} id={chat._id} name={chat.name} />
+									))}
+								</ol>
+							</div>
+						)}
 					</div>
 				</div>
 
