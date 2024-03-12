@@ -66,23 +66,23 @@ const MainLayout = () => {
 	const filterTodayChats = (chats) => {
 		const startOfToday = new Date();
 		startOfToday.setHours(0, 0, 0, 0);
-		return chats.filter((chat) => new Date(chat.updatedAt) >= startOfToday);
+		return chats.filter((chat) => new Date(chat.createdAt) >= startOfToday);
 	};
 
 	const filterPrevious7DaysChats = (chats) => {
 		return chats.filter(
-			(chat) => isWithinLastNDays(chat.updatedAt, 7) && !isWithinLastNDays(chat.updatedAt, 1)
+			(chat) => isWithinLastNDays(chat.createdAt, 7) && !isWithinLastNDays(chat.createdAt, 1)
 		);
 	};
 
 	const filterPrevious30DaysChats = (chats) => {
 		return chats.filter(
-			(chat) => isWithinLastNDays(chat.updatedAt, 30) && !isWithinLastNDays(chat.updatedAt, 7)
+			(chat) => isWithinLastNDays(chat.createdAt, 30) && !isWithinLastNDays(chat.createdAt, 7)
 		);
 	};
 
 	const filterMoreThan30DaysChats = (chats) => {
-		return chats.filter((chat) => !isWithinLastNDays(chat.updatedAt, 30));
+		return chats.filter((chat) => !isWithinLastNDays(chat.createdAt, 30));
 	};
 
 	return (
