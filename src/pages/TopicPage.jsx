@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import Logo from '/logo.png';
 import Message from '../components/Message';
 import { toast } from 'react-toastify';
 import { addNewChat, getChatsApi } from '../apis';
@@ -8,15 +7,16 @@ import { useParams } from 'react-router-dom';
 import UserMessageForm from '../components/UserMessageForm';
 
 const TopicPage = () => {
-	const { state, dispatch } = AuthContext();
-	const user = state.user;
+	const { dispatch } = AuthContext();
 	const id = useParams().id;
 	const [chatSessions, setChatSessions] = useState([]);
+	const [loading, setLoading] = useState(false);
 
 	const submitHandler = (e) => {
 		e.preventDefault();
 		const inputText = e.target[0].value;
 		if (!inputText) return;
+		setLoading(true);
 		addNewChat(inputText, id)
 			.then((res) => {
 				dispatch({
@@ -24,7 +24,7 @@ const TopicPage = () => {
 					payload: res,
 				});
 				setChatSessions(res.chatsContent);
-				e.target[0].value = '';
+				setLoading(false);
 			})
 			.catch((err) => {
 				toast.error(err);
@@ -49,8 +49,8 @@ const TopicPage = () => {
 					{chatSessions.map(({ userMsg, gptMsg }, index) => {
 						return (
 							<article key={index}>
-								<Message profile={user.avatar} user={'You'} text={userMsg} />
-								<Message profile={Logo} user={'MoeGPT'} text={gptMsg} />
+								<Message user={'You'} text={userMsg} />
+								<Message user={'MoeGPT'} text={gptMsg} />
 							</article>
 						);
 					})}
@@ -58,7 +58,7 @@ const TopicPage = () => {
 			</div>
 
 			<div className="w-full pt-2">
-				<UserMessageForm submitHandler={submitHandler} />
+				<UserMessageForm loading={loading} submitHandler={submitHandler} />
 			</div>
 		</>
 	);

@@ -3,7 +3,7 @@ import Avatar from '../Avatar';
 
 const Message = ({ user, text }) => {
 	return (
-		<div className="flex mx-auto max-w-3xl gap-3 py-2 items-center">
+		<div className="flex mx-auto max-w-3xl gap-3 py-2">
 			<div className="flex flex-shrink-0 flex-col">
 				{user === 'You' && <Avatar />}
 				{user === 'MoeGPT' && <img className="h-8 w-8 rounded-full" src="/logo.png" />}

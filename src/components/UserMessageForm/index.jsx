@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import { FaRegStopCircle } from 'react-icons/fa';
+import { FaArrowUp } from 'react-icons/fa6';
 
-const UserMessageForm = ({ submitHandler }) => {
+const UserMessageForm = ({ loading, submitHandler }) => {
 	const maxTextAreaHeight = 200;
 	const textAreaRef = useRef(null);
 	const [inputText, setInputText] = useState('');
@@ -20,9 +22,9 @@ const UserMessageForm = ({ submitHandler }) => {
 		setIsTextAreaOverflow(e.target.scrollHeight > maxTextAreaHeight);
 	};
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = (e) => {
 		e.preventDefault();
-		await submitHandler(e);
+		submitHandler(e);
 		setInputText('');
 	};
 
@@ -42,10 +44,10 @@ const UserMessageForm = ({ submitHandler }) => {
 					value={inputText}
 				></textarea>
 				<button
-					className="w-7 h-7 absolute bottom-3 right-3 text-black bg-white disabled:text-gray-400 disabled:bg-black rounded-lg"
+					className="w-7 h-7 absolute bottom-3 right-3 flex justify-center items-center text-black bg-white disabled:text-gray-400 disabled:bg-black rounded-lg"
 					disabled={!inputText}
 				>
-					&uarr;
+					{loading ? <FaRegStopCircle className="text-white" /> : <FaArrowUp />}
 				</button>
 			</div>
 		</form>
@@ -56,4 +58,5 @@ export default UserMessageForm;
 
 UserMessageForm.propTypes = {
 	submitHandler: PropTypes.func.isRequired,
+	loading: PropTypes.bool.isRequired,
 };

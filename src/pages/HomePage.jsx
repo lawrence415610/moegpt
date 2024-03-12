@@ -6,15 +6,18 @@ import { createNewTopicApi } from '../apis';
 import { getChatsApi } from '../apis';
 import { useNavigate } from 'react-router-dom';
 import UserMessageForm from '../components/UserMessageForm';
+import { useState } from 'react';
 const HomePage = () => {
 	const { state, dispatch } = AuthContext();
 	const navigate = useNavigate();
 	const user = state.user;
+	const [loading, setLoading] = useState(false);
 
 	const submitHandler = (e) => {
 		e.preventDefault();
 		const inputText = e.target[0].value;
 		if (!inputText) return;
+		setLoading(true);
 		createNewTopicApi(inputText, user._id)
 			.then((res) => {
 				if (res.id) {
@@ -25,6 +28,7 @@ const HomePage = () => {
 						});
 					});
 				}
+				setLoading(false);
 				navigate(`/chats/${res.id}`, { replace: true });
 			})
 			.catch((err) => {
@@ -49,7 +53,7 @@ const HomePage = () => {
 			</div>
 
 			<div className="w-full pt-2">
-				<UserMessageForm submitHandler={submitHandler} />
+				<UserMessageForm loading={loading} submitHandler={submitHandler} />
 			</div>
 		</>
 	);
