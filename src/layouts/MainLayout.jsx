@@ -117,7 +117,7 @@ const MainLayout = () => {
 						{/* Today */}
 						{filterTodayChats(chats).length === 0 && null}
 						{filterTodayChats(chats).length !== 0 && (
-							<div className="overflow-y-auto mt-5">
+							<div className="overflow-y-auto mt-3">
 								<h3 className="h-9 pb-2 pt-3 px-2 text-dark-grey text-xs">Today</h3>
 								<ol>
 									{filterTodayChats(chats).map((chat) => (
