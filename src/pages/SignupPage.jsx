@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { signupApi } from '../apis';
+import AuthContext from '../context';
 
 const SignupPage = () => {
 	const navigate = useNavigate();
@@ -13,7 +14,8 @@ const SignupPage = () => {
 	const [passwordError, setPasswordError] = useState(null);
 	const [confirmPasswordError, setConfirmPasswordError] = useState(null);
 	const [isDisabled, setIsDisabled] = useState(true);
-
+	const { state } = AuthContext();
+	const { user } = state;
 	const emailRegex = /^[a-zA-Z0-6._%+-]+@[a-zA-Z0-6.-]+\.[a-zA-Z]{2,}$/;
 	const passwordRegex = /^(?=.*[a-z])(?=.*\d).{8,}$/;
 
@@ -71,15 +73,15 @@ const SignupPage = () => {
 			setIsDisabled(false);
 		}
 		// use this after logout feature is implemented
-		// if (state.user !== null) {
-		// 	navigate('/');
-		// }
-	}, [emailError, passwordError, confirmPasswordError]);
+		if (user !== null) {
+			navigate('/');
+		}
+	}, [emailError, passwordError, confirmPasswordError, user, navigate]);
 
 	return (
-		<main className="flex items-center justify-center bg-dark-blue h-screen body-font">
+		<main className="flex items-center justify-center bg-dark-blue h-screen body-font text-black">
 			<div className="max-w-lg rounded-md bg-slate-100 w-full p-10">
-				<h1 className="big-title-font select-none mb-10">Sign up</h1>
+				<h1 className="big-title-font select-none mb-10 text-black">Sign up</h1>
 				<form onSubmit={submitHandler} className="flex flex-col justify-start gap-8">
 					<div className="flex justify-around items-center">
 						<label className="min-w-16" htmlFor="email">
@@ -140,7 +142,7 @@ const SignupPage = () => {
 						</div>
 					</div>
 					<button
-						className={`primary-btn w-32 self-center ${
+						className={`text-white primary-btn w-32 self-center ${
 							isDisabled ? 'bg-stone-400 hover:bg-stone-400 cursor-not-allowed' : ''
 						}`}
 						disabled={isDisabled}

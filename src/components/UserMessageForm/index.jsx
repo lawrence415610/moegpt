@@ -20,9 +20,9 @@ const UserMessageForm = ({ submitHandler }) => {
 		setIsTextAreaOverflow(e.target.scrollHeight > maxTextAreaHeight);
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		submitHandler(e);
+		await submitHandler(e);
 		setInputText('');
 	};
 
