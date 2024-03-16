@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { signupApi } from '../apis';
-import AuthContext from '../context';
+import AuthContext from '../context/auth';
 
 const SignupPage = () => {
 	const navigate = useNavigate();

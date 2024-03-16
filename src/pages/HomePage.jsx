@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import Logo from '/logo.png';
-import AuthContext from '../context';
+import AuthContext from '../context/auth';
+import ChatContext from '../context/chat';
 import { toast } from 'react-toastify';
 import { createNewTopicApi } from '../apis';
 import { getChatsApi } from '../apis';
@@ -8,9 +9,10 @@ import { useNavigate } from 'react-router-dom';
 import UserMessageForm from '../components/UserMessageForm';
 import { useState } from 'react';
 const HomePage = () => {
-	const { state, dispatch } = AuthContext();
+	const { state: authState } = AuthContext();
+	const { dispatch: chatDispatch } = ChatContext();
 	const navigate = useNavigate();
-	const user = state.user;
+	const user = authState.user;
 	const [loading, setLoading] = useState(false);
 
 	const submitHandler = (e) => {
@@ -22,7 +24,7 @@ const HomePage = () => {
 			.then((res) => {
 				if (res.id) {
 					getChatsApi().then((res) => {
-						dispatch({
+						chatDispatch({
 							type: 'GET_CHATS',
 							payload: res,
 						});
@@ -38,12 +40,12 @@ const HomePage = () => {
 
 	useEffect(() => {
 		getChatsApi().then((res) => {
-			dispatch({
+			chatDispatch({
 				type: 'GET_CHATS',
 				payload: res,
 			});
 		});
-	}, [dispatch]);
+	}, [chatDispatch]);
 
 	return (
 		<>
