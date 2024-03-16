@@ -5,7 +5,8 @@ import { GoGear } from 'react-icons/go';
 import { MdOutlineLogout } from 'react-icons/md';
 import ChatTab from '../components/ChatTab';
 import Avatar from '../components/Avatar';
-import AuthContext from '../context';
+import AuthContext from '../context/auth';
+import ChatContext from '../context/chat';
 import { logoutApi } from '../apis';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -19,8 +20,10 @@ const MainLayout = () => {
 	const [toolbox, setToolbox] = useState(false);
 	const [showSetting, setShowSetting] = useState(false);
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-	const { state, dispatch } = AuthContext();
-	const { user, chats } = state;
+	const { state: authState, dispatch: authDispatch } = AuthContext();
+	const { user } = authState;
+	const { state: chatState } = ChatContext();
+	const { chats } = chatState;
 	const navigate = useNavigate();
 
 	const toolboxHandler = () => {
@@ -38,7 +41,7 @@ const MainLayout = () => {
 	};
 
 	const logoutHandler = async () => {
-		dispatch({ type: 'LOGOUT' });
+		authDispatch({ type: 'LOGOUT' });
 		try {
 			const data = await logoutApi();
 			if (data.ok) {
@@ -206,8 +209,8 @@ const MainLayout = () => {
 						className={`item-box ${toolbox ? 'bg-neutral-800' : ''}`}
 						onClick={() => toolboxHandler()}
 					>
-						<Avatar src={user.avatar} />
-						<span className="select-none">{user.username}</span>
+						{user && <Avatar src={user.avatar} />}
+						{user && <span className="select-none">{user.username}</span>}
 					</div>
 				</div>
 			</nav>

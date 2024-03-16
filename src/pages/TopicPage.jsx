@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import Message from '../components/Message';
 import { toast } from 'react-toastify';
 import { addNewChat, getChatsApi } from '../apis';
-import AuthContext from '../context';
+import ChatContext from '../context/chat';
 import { useParams } from 'react-router-dom';
 import UserMessageForm from '../components/UserMessageForm';
 
 const TopicPage = () => {
-	const { dispatch } = AuthContext();
+	const { dispatch: chatDispatch } = ChatContext();
 	const id = useParams().id;
 	const [chatSessions, setChatSessions] = useState([]);
 	const [loading, setLoading] = useState(false);
@@ -19,7 +19,7 @@ const TopicPage = () => {
 		setLoading(true);
 		addNewChat(inputText, id)
 			.then((res) => {
-				dispatch({
+				chatDispatch({
 					type: 'ADD_CHAT',
 					payload: res,
 				});
@@ -33,14 +33,14 @@ const TopicPage = () => {
 
 	useEffect(() => {
 		getChatsApi().then((res) => {
-			dispatch({
+			chatDispatch({
 				type: 'GET_CHATS',
 				payload: res,
 			});
 			const chatsContent = res.find((chat) => chat._id === id).chatsContent;
 			setChatSessions(chatsContent);
 		});
-	}, [id, dispatch]);
+	}, [id, chatDispatch]);
 
 	return (
 		<>

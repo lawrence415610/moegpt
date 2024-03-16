@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import Modal from '../Modal';
 import { deleteTopicApi, getChatsApi } from '../../apis';
-import AuthContext from '../../context';
+import AuthContext from '../../context/auth';
 import { useNavigate } from 'react-router-dom';
 
 const DeleteModal = ({ id, titleText, closeModal }) => {
