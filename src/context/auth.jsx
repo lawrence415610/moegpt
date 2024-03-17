@@ -4,12 +4,6 @@ import axios from 'axios';
 
 const authContext = createContext();
 const rootReducer = (state, action) => {
-	// const newTopics = state.chats.map((chat) => {
-	// 	if (chat.id === action.payload._id) {
-	// 		return action.payload;
-	// 	}
-	// 	return chat;
-	// });
 	switch (action.type) {
 		case 'LOGIN':
 			return { ...state, user: action.payload };
@@ -17,17 +11,12 @@ const rootReducer = (state, action) => {
 			return { ...state, user: { ...state.user, ...action.payload } };
 		case 'LOGOUT':
 			return { ...state, user: null };
-		// case 'GET_CHATS':
-		// 	return { ...state, chats: action.payload };
-		// case 'ADD_CHAT':
-		// 	return { ...state, chats: newTopics };
 		default:
 			return state;
 	}
 };
 const initialState = {
 	user: null,
-	// chats: [],
 };
 
 export const AuthProvider = ({ children }) => {
