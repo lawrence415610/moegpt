@@ -1,23 +1,23 @@
 import axios from 'axios';
 
-// const baseUrl = 'http://localhost:5555/api';
+const baseUrl = 'http://localhost:5555/api';
 
-const baseUrl = 'http://ec2-52-91-173-125.compute-1.amazonaws.com:5555/api';
+// const baseUrl = 'http://ec2-52-91-173-125.compute-1.amazonaws.com:5555/api';
 axios.defaults.baseURL = baseUrl;
 
 // Auth features
 
-export const getCurrentUserApi = async () => {
-	try {
-		const { data } = await axios.get('/current-user', {
-			withCredentials: true,
-			credentials: 'include',
-		});
-		return data;
-	} catch (err) {
-		console.log('error happened when trying to get current user, Error Msg: ', err);
-	}
-};
+// export const getCurrentUserApi = async () => {
+// 	try {
+// 		const { data } = await axios.get('/current-user', {
+// 			withCredentials: true,
+// 			credentials: 'include',
+// 		});
+// 		return data;
+// 	} catch (err) {
+// 		console.log('error happened when trying to get current user, Error Msg: ', err);
+// 	}
+// };
 
 export const loginApi = async ({ email, password }) => {
 	try {

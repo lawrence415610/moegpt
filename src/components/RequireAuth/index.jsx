@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
-import { getCurrentUserApi } from '../../apis';
 function RequireAuth() {
 	const [ok, setOk] = useState(false);
 	const [loading, setLoading] = useState(true);
 	const fetchUser = async () => {
 		try {
 			setLoading(true);
-			const data = await getCurrentUserApi();
-
-			if (data) {
+			// Not the best way doing it
+			const user = window.localStorage.getItem('user');
+			if (user) {
 				setOk(true);
 			}
 		} catch (err) {
