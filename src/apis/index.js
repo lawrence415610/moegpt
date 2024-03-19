@@ -7,17 +7,17 @@ axios.defaults.baseURL = baseUrl;
 
 // Auth features
 
-// export const getCurrentUserApi = async () => {
-// 	try {
-// 		const { data } = await axios.get('/current-user', {
-// 			withCredentials: true,
-// 			credentials: 'include',
-// 		});
-// 		return data;
-// 	} catch (err) {
-// 		console.log('error happened when trying to get current user, Error Msg: ', err);
-// 	}
-// };
+export const getCurrentUserApi = async () => {
+	try {
+		const { data } = await axios.get('/current-user', {
+			withCredentials: true,
+			credentials: 'include',
+		});
+		return data;
+	} catch (err) {
+		console.log('error happened when trying to get current user, Error Msg: ', err);
+	}
+};
 
 export const loginApi = async ({ email, password }) => {
 	try {
