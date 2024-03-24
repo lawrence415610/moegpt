@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-// const baseUrl = 'http://localhost:5555/api';
+const baseUrl = 'http://localhost:5555/api';
 
-const baseUrl = 'http://ec2-52-91-173-125.compute-1.amazonaws.com:5555/api';
+// const baseUrl = 'http://ec2-52-91-173-125.compute-1.amazonaws.com:5555/api';
 axios.defaults.baseURL = baseUrl;
 axios.defaults.withCredentials = true;
 
