@@ -76,9 +76,11 @@ export const addNewChat = async (message, chatsId) => {
 	}
 };
 
-export const getChatsApi = async () => {
+export const getChatsApi = async (userId) => {
 	try {
-		const { data } = await axios.get('/chats');
+		const { data } = await axios.get('/chats', {
+			params: { userId },
+		});
 		return data;
 	} catch (err) {
 		console.log('error happened when trying to get chats records, Error Msg: ', err);

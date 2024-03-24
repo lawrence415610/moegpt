@@ -6,11 +6,13 @@ import { useNavigate } from 'react-router-dom';
 
 const DeleteModal = ({ id, titleText, closeModal }) => {
 	const navigate = useNavigate();
-	const { dispatch } = AuthContext();
+	const { state, dispatch } = AuthContext();
+	const { user } = state;
+	const userId = user._id;
 	const deleteHandler = async () => {
 		const res = await deleteTopicApi(id);
 		if (res.ok) {
-			getChatsApi().then((res) => {
+			getChatsApi(userId).then((res) => {
 				dispatch({
 					type: 'GET_CHATS',
 					payload: res,
