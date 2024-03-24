@@ -13,6 +13,7 @@ const HomePage = () => {
 	const { dispatch: chatDispatch } = ChatContext();
 	const navigate = useNavigate();
 	const user = authState.user;
+	const userId = user._id;
 	const [loading, setLoading] = useState(false);
 
 	const submitHandler = (e) => {
@@ -23,7 +24,7 @@ const HomePage = () => {
 		createNewTopicApi(inputText, user._id)
 			.then((res) => {
 				if (res.id) {
-					getChatsApi().then((res) => {
+					getChatsApi(userId).then((res) => {
 						chatDispatch({
 							type: 'GET_CHATS',
 							payload: res,
@@ -39,13 +40,13 @@ const HomePage = () => {
 	};
 
 	useEffect(() => {
-		getChatsApi().then((res) => {
+		getChatsApi(userId).then((res) => {
 			chatDispatch({
 				type: 'GET_CHATS',
 				payload: res,
 			});
 		});
-	}, [chatDispatch]);
+	}, [chatDispatch, userId]);
 
 	return (
 		<>

@@ -8,8 +8,7 @@ function RequireAuth() {
 		try {
 			setLoading(true);
 			const data = await getCurrentUserApi();
-
-			if (data) {
+			if (data.ok) {
 				setOk(true);
 			}
 		} catch (err) {

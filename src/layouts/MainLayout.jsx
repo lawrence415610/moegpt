@@ -41,7 +41,6 @@ const MainLayout = () => {
 	};
 
 	const logoutHandler = async () => {
-		authDispatch({ type: 'LOGOUT' });
 		try {
 			const data = await logoutApi();
 			if (data.ok) {
@@ -51,8 +50,10 @@ const MainLayout = () => {
 			}
 		} catch (err) {
 			toast.error(err);
+		} finally {
+			navigate('/login', { replace: true });
+			authDispatch({ type: 'LOGOUT' });
 		}
-		navigate('/login', { replace: true });
 	};
 
 	const isWithinLastNDays = (dateString, days) => {

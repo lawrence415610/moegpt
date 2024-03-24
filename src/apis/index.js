@@ -1,17 +1,16 @@
 import axios from 'axios';
 
 const baseUrl = 'http://localhost:5555/api';
+
 // const baseUrl = 'http://ec2-52-91-173-125.compute-1.amazonaws.com:5555/api';
 axios.defaults.baseURL = baseUrl;
+axios.defaults.withCredentials = true;
 
 // Auth features
 
 export const getCurrentUserApi = async () => {
 	try {
-		const { data } = await axios.get('/current-user', {
-			withCredentials: true,
-			credentials: 'include',
-		});
+		const { data } = await axios.get('/current-user');
 		return data;
 	} catch (err) {
 		console.log('error happened when trying to get current user, Error Msg: ', err);
@@ -20,14 +19,10 @@ export const getCurrentUserApi = async () => {
 
 export const loginApi = async ({ email, password }) => {
 	try {
-		const { data } = await axios.post(
-			'/login',
-			{
-				email,
-				password,
-			},
-			{ withCredentials: true, credentials: 'include' }
-		);
+		const { data } = await axios.post('/login', {
+			email,
+			password,
+		});
 		return data;
 	} catch (err) {
 		console.log('error happened when trying to login, Error Msg: ', err);
@@ -49,10 +44,7 @@ export const signupApi = async ({ email, password }) => {
 
 export const logoutApi = async () => {
 	try {
-		const { data } = await axios.get('/logout', {
-			credentials: 'include',
-			withCredentials: true,
-		});
+		const { data } = await axios.get('/logout');
 		return data;
 	} catch (err) {
 		console.log('error happened when trying to logout, Error Msg: ', err);
@@ -84,11 +76,10 @@ export const addNewChat = async (message, chatsId) => {
 	}
 };
 
-export const getChatsApi = async () => {
+export const getChatsApi = async (userId) => {
 	try {
 		const { data } = await axios.get('/chats', {
-			withCredentials: true,
-			credentials: 'include',
+			params: { userId },
 		});
 		return data;
 	} catch (err) {
