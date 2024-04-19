@@ -247,9 +247,7 @@ const MainLayout = () => {
 					{/* Main page Section */}
 					<Outlet />
 					{/* Main page Section END */}
-					<footer className="text-center text-xs px-2 py-2">
-						Made by Heaven © Programming Dojo 2024
-					</footer>
+					<footer className="text-center text-xs px-2 py-2">Made by Lawrence Liu</footer>
 				</main>
 			</div>
 			<Tooltip

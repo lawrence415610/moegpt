@@ -7,7 +7,7 @@ import { loginApi } from '../apis';
 const LoginPage = () => {
 	const { dispatch } = AuthContext();
 	const navigate = useNavigate();
-	const [email, setEmail] = useState('testuser@gmail.com');
+	const [email, setEmail] = useState('randomtest@gmail.com');
 	const [password, setPassword] = useState('Test1234');
 	const [emailError, setEmailError] = useState(null);
 	const [passwordError, setPasswordError] = useState(null);
