@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import Logo from '/logo.png';
-import AuthContext from '../context/auth';
 import ChatContext from '../context/chat';
 import { toast } from 'react-toastify';
 import { createNewTopicApi } from '../apis';
@@ -8,12 +7,12 @@ import { getChatsApi } from '../apis';
 import { useNavigate } from 'react-router-dom';
 import UserMessageForm from '../components/UserMessageForm';
 import { useState } from 'react';
+import { auth } from '../firebase/index';
 const HomePage = () => {
-	const { state: authState } = AuthContext();
 	const { dispatch: chatDispatch } = ChatContext();
 	const navigate = useNavigate();
-	const user = authState.user;
-	const userId = user._id;
+	const user = auth.currentUser;
+	const userId = user.uid;
 	const [loading, setLoading] = useState(false);
 
 	const submitHandler = (e) => {
@@ -39,14 +38,14 @@ const HomePage = () => {
 			});
 	};
 
-	useEffect(() => {
-		getChatsApi(userId).then((res) => {
-			chatDispatch({
-				type: 'GET_CHATS',
-				payload: res,
-			});
-		});
-	}, [chatDispatch, userId]);
+	// useEffect(() => {
+	// 	getChatsApi(userId).then((res) => {
+	// 		chatDispatch({
+	// 			type: 'GET_CHATS',
+	// 			payload: res,
+	// 		});
+	// 	});
+	// }, [chatDispatch, userId]);
 
 	return (
 		<>

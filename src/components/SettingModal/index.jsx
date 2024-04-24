@@ -6,10 +6,9 @@ import Modal from '../Modal';
 import { uploadAvatarApi } from '../../apis';
 import { toast } from 'react-toastify';
 import { GoGear } from 'react-icons/go';
-import AuthContext from '../../context/auth';
+import { auth } from '../../firebase/index';
 
 const SettingModal = ({ closeModal }) => {
-	const { state, dispatch } = AuthContext();
 	const [image, setImage] = useState(null);
 	const [editor, setEditor] = useState(null);
 
@@ -38,15 +37,10 @@ const SettingModal = ({ closeModal }) => {
 				const base64Img = canvas.toDataURL();
 				const { data, status } = await uploadAvatarApi({
 					image: base64Img,
-					email: state.user.email,
+					email: auth.currentUser.email,
 				});
 
 				if (status === 200) {
-					dispatch({
-						type: 'AVATAR',
-						payload: { avatar: data.avatar },
-					});
-
 					const user = JSON.parse(window.localStorage.getItem('user'));
 					window.localStorage.setItem(
 						'user',

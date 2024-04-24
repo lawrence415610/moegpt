@@ -5,7 +5,6 @@ import { GoGear } from 'react-icons/go';
 import { MdOutlineLogout } from 'react-icons/md';
 import ChatTab from '../components/ChatTab';
 import Avatar from '../components/Avatar';
-import AuthContext from '../context/auth';
 import ChatContext from '../context/chat';
 import { logoutApi } from '../apis';
 import { Outlet, useNavigate } from 'react-router-dom';
@@ -15,13 +14,13 @@ import { TbLayoutSidebarLeftCollapseFilled } from 'react-icons/tb';
 import { TbLayoutSidebarLeftExpandFilled } from 'react-icons/tb';
 import { CgAddR } from 'react-icons/cg';
 import { Tooltip } from 'react-tooltip';
+import { auth } from '../firebase/index';
 
 const MainLayout = () => {
 	const [toolbox, setToolbox] = useState(false);
 	const [showSetting, setShowSetting] = useState(false);
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-	const { state: authState, dispatch: authDispatch } = AuthContext();
-	const { user } = authState;
+	const user = auth.currentUser;
 	const { state: chatState } = ChatContext();
 	const { chats } = chatState;
 	const navigate = useNavigate();
@@ -52,7 +51,6 @@ const MainLayout = () => {
 			toast.error(err);
 		} finally {
 			navigate('/login', { replace: true });
-			authDispatch({ type: 'LOGOUT' });
 		}
 	};
 
@@ -210,8 +208,8 @@ const MainLayout = () => {
 						className={`item-box ${toolbox ? 'bg-neutral-800' : ''}`}
 						onClick={() => toolboxHandler()}
 					>
-						{user && <Avatar src={user.avatar} />}
-						{user && <span className="select-none">{user.username}</span>}
+						{user && <Avatar src={user.photoURL} />}
+						{user && <span className="select-none">{user.displayName}</span>}
 					</div>
 				</div>
 			</nav>

@@ -3,14 +3,12 @@ import Message from '../components/Message';
 import { toast } from 'react-toastify';
 import { addNewChat, getChatsApi } from '../apis';
 import ChatContext from '../context/chat';
-import AuthContext from '../context/auth';
 import { useParams } from 'react-router-dom';
 import UserMessageForm from '../components/UserMessageForm';
-
+import { auth } from '../firebase/index';
 const TopicPage = () => {
 	const { dispatch: chatDispatch } = ChatContext();
-	const { state: authState } = AuthContext();
-	const user = authState.user;
+	const user = auth.currentUser;
 	const userId = user._id;
 	const id = useParams().id;
 	const [chatSessions, setChatSessions] = useState([]);

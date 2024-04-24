@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import AuthContext from '../context/auth';
 import { toast } from 'react-toastify';
-import { loginApi } from '../apis';
+import { auth } from '../firebase/index';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const LoginPage = () => {
-	const { dispatch } = AuthContext();
 	const navigate = useNavigate();
-	const [email, setEmail] = useState('randomtest@gmail.com');
+	const [email, setEmail] = useState('testuser@gmail.com');
 	const [password, setPassword] = useState('Test1234');
 	const [emailError, setEmailError] = useState(null);
 	const [passwordError, setPasswordError] = useState(null);
@@ -47,16 +46,12 @@ const LoginPage = () => {
 		e.preventDefault();
 		if (isDisabled) return;
 		try {
-			const data = await loginApi({ email, password });
-			dispatch({
-				type: 'LOGIN',
-				payload: data,
-			});
-			window.localStorage.setItem('user', JSON.stringify(data));
-			navigate('/');
+			await signInWithEmailAndPassword(auth, email, password);
 			toast.success('Login successfully!');
+			navigate('/');
 		} catch (err) {
-			toast.error(err.response.data);
+			toast.error('User Sign failed!');
+			console.log(err);
 		}
 	};
 

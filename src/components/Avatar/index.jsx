@@ -1,10 +1,8 @@
-import AuthContext from '../../context/auth';
 import PropTypes from 'prop-types';
-
+import { auth } from '../../firebase/index';
 const Avatar = ({ src }) => {
-	const { state } = AuthContext();
-	const user = state.user;
-	const usernameInitial = src ? null : user.username[0];
+	const user = auth.currentUser;
+	const usernameInitial = src ? null : user.displayName[0];
 	return (
 		<>
 			{src && (

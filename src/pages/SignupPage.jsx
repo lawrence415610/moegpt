@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { signupApi } from '../apis';
-import AuthContext from '../context/auth';
+import { auth } from '../firebase/index';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 const SignupPage = () => {
 	const navigate = useNavigate();
@@ -14,8 +14,6 @@ const SignupPage = () => {
 	const [passwordError, setPasswordError] = useState(null);
 	const [confirmPasswordError, setConfirmPasswordError] = useState(null);
 	const [isDisabled, setIsDisabled] = useState(true);
-	const { state } = AuthContext();
-	const { user } = state;
 	const emailRegex = /^[a-zA-Z0-6._%+-]+@[a-zA-Z0-6.-]+\.[a-zA-Z]{2,}$/;
 	const passwordRegex = /^(?=.*[a-z])(?=.*\d).{8,}$/;
 
@@ -53,10 +51,11 @@ const SignupPage = () => {
 		e.preventDefault();
 		if (isDisabled) return;
 		try {
-			const data = await signupApi({ email, password });
-			if (data.ok) {
-				toast.success('Signup successfully!');
-			}
+			await createUserWithEmailAndPassword(auth, email, password);
+			toast.success('Signup successfully!');
+			updateProfile(auth.currentUser, {
+				displayName: email.split('@')[0],
+			});
 			setEmail('');
 			setPassword('');
 			navigate('/');
@@ -72,11 +71,7 @@ const SignupPage = () => {
 		} else {
 			setIsDisabled(false);
 		}
-		// use this after logout feature is implemented
-		if (user !== null) {
-			navigate('/');
-		}
-	}, [emailError, passwordError, confirmPasswordError, user, navigate]);
+	}, [emailError, passwordError, confirmPasswordError]);
 
 	return (
 		<main className="flex items-center justify-center bg-dark-blue h-screen body-font text-black">
