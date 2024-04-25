@@ -1,16 +1,18 @@
+const OpenAI = require('openai');
 const { onRequest } = require('firebase-functions/v2/https');
-
 // The Firebase Admin SDK to access Firestore.
 const { initializeApp } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
 
 initializeApp();
 const db = getFirestore();
+const openai = new OpenAI({
+	apiKey: process.env.OPENAI_API_KEY,
+});
 
 const getAllTopics = onRequest((req, res) => {
 	const userId = req.query.userId;
 	const topics = db.collection('topics');
-
 	const query = topics.where('userId', '==', userId);
 	query
 		.get()
@@ -23,31 +25,39 @@ const getAllTopics = onRequest((req, res) => {
 		});
 });
 
-const addNewTopic = onRequest((req, res) => {
+const addNewTopic = onRequest(async (req, res) => {
 	const { userId, userMsg } = req.body;
-	const gptMsg = 'Hello, how can I help you today?';
+	const getResponse = await openai.chat.completions.create({
+		model: 'gpt-3.5-turbo',
+		messages: [
+			{
+				role: 'system',
+				content: 'You are a helpful assistant.',
+			},
+			{
+				role: 'user',
+				content: userMsg,
+			},
+		],
+	});
+	const gptMsg = getResponse.choices[0].message.content;
 	const newTopic = {
 		userId,
 		updatedAt: new Date().toISOString(),
 		name: userMsg.slice(0, 20),
+		chats: [
+			{
+				userMsg,
+				gptMsg,
+				updatedAt: new Date().toISOString(),
+			},
+		],
 	};
 
 	db.collection('topics')
 		.add(newTopic)
 		.then((topicRef) => {
-			db.collection('chats')
-				.add({
-					userMsg,
-					gptMsg,
-					updatedAt: new Date().toISOString(),
-					topicId: topicRef.id,
-				})
-				.then((chatRef) => {
-					res.send({ chatId: chatRef.id, topicId: topicRef.id });
-				})
-				.catch((err) => {
-					res.send(err);
-				});
+			res.send({ id: topicRef.id, ...newTopic });
 		})
 		.catch((err) => {
 			res.send(err);
