@@ -1,30 +1,32 @@
 import { useEffect, useState } from 'react';
 import Message from '../components/Message';
 import { toast } from 'react-toastify';
-import { addNewChat } from '../apis';
+import { addNewChatApi, getAllTopicsApi } from '../apis';
 import TopicContext from '../context/topic';
 import { useParams } from 'react-router-dom';
 import UserMessageForm from '../components/UserMessageForm';
-import { getTopicApi } from '../apis';
+import { auth } from '../firebase/index';
 
 const TopicPage = () => {
 	const { dispatch } = TopicContext();
 	const id = useParams().id;
 	const [chatSessions, setChatSessions] = useState([]);
 	const [loading, setLoading] = useState(false);
+	const user = auth.currentUser;
+	const userId = user.uid;
 
 	const submitHandler = (e) => {
 		e.preventDefault();
 		const inputText = e.target[0].value;
 		if (!inputText) return;
 		setLoading(true);
-		addNewChat(inputText, id)
+		addNewChatApi(id, inputText)
 			.then((res) => {
 				dispatch({
-					type: 'ADD_CHAT',
+					type: 'UPDATE_TOPIC',
 					payload: res,
 				});
-				setChatSessions(res.chatsContent);
+				setChatSessions(res.chats);
 				setLoading(false);
 			})
 			.catch((err) => {
@@ -33,14 +35,19 @@ const TopicPage = () => {
 	};
 
 	useEffect(() => {
-		getTopicApi(id)
+		getAllTopicsApi(userId)
 			.then((res) => {
-				setChatSessions(res.chats);
+				dispatch({
+					type: 'GET_TOPICS',
+					payload: res,
+				});
+				const topic = res.find((topic) => topic.id === id);
+				setChatSessions(topic.chats);
 			})
 			.catch((err) => {
-				toast.error(err);
+				console.error(err);
 			});
-	});
+	}, [dispatch, id, userId]);
 
 	return (
 		<>

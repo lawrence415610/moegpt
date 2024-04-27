@@ -8,6 +8,13 @@ const rootReducer = (state, action) => {
 			return { ...state, topics: action.payload };
 		case 'ADD_TOPIC':
 			return { ...state, topics: [...state.topics, action.payload] };
+		case 'UPDATE_TOPIC':
+			return {
+				...state,
+				topics: state.topics.map((topic) =>
+					topic.id === action.payload.id ? action.payload : topic
+				),
+			};
 		default:
 			return state;
 	}

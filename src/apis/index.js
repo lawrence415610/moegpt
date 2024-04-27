@@ -17,11 +17,11 @@ export const addNewTopicApi = async (userMsg, userId) => {
 	}
 };
 
-export const addNewChat = async (message, chatsId) => {
+export const addNewChatApi = async (topicId, userMsg) => {
 	try {
-		const { data } = await axios.post('/add-new-chat', {
-			message,
-			chatsId,
+		const { data } = await axios.post('/addNewChat', {
+			topicId,
+			userMsg,
 		});
 		return data;
 	} catch (err) {
@@ -37,17 +37,6 @@ export const getAllTopicsApi = async (userId) => {
 		return data;
 	} catch (err) {
 		console.log('error happened when trying to get chats records, Error Msg: ', err);
-	}
-};
-
-export const getTopicApi = async (topicId) => {
-	try {
-		const { data } = await axios.get('/getTopic', {
-			params: { topicId },
-		});
-		return data;
-	} catch (err) {
-		console.log('error happened when trying to get topic, Error Msg: ', err);
 	}
 };
 

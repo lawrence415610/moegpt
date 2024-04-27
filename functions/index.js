@@ -28,19 +28,6 @@ const getAllTopics = onRequest({ cors: true }, (req, res) => {
 		});
 });
 
-const getTopic = onRequest({ cors: true }, (req, res) => {
-	const { topicId } = req.query;
-	db.collection('topics')
-		.doc(topicId)
-		.get()
-		.then((snapshot) => {
-			res.send({ ...snapshot.data(), id: snapshot.id });
-		})
-		.catch((err) => {
-			res.send(err);
-		});
-});
-
 const addNewTopic = onRequest({ cors: true }, async (req, res) => {
 	const { userId, userMsg } = req.body;
 	const getResponse = await openai.chat.completions.create({
@@ -80,57 +67,54 @@ const addNewTopic = onRequest({ cors: true }, async (req, res) => {
 		});
 });
 
-const addNewChat = onRequest(
-	{ cors: true },
-	async (req, res) => {
-		const { topicId, userMsg } = req.body;
-		const topic = (await db.collection('topics').doc(topicId).get()).data();
-		const chats = topic.chats;
-		const messages = [];
-		chats.forEach((chat) => {
-			if (chat && chat.userMsg) messages.push({ role: 'user', content: chat.userMsg });
-			if (chat && chat.gptMsg) messages.push({ role: 'assistant', content: chat.gptMsg });
-		});
-		messages.push({
-			role: 'user',
-			content: userMsg,
-		});
-		messages.unshift({
-			role: 'system',
-			content: 'You are a helpful assistant.',
-		});
-		const getResponse = await openai.chat.completions.create({
-			model: 'gpt-3.5-turbo',
-			messages,
-		});
-		const gptMsg = getResponse.choices[0].message.content;
-		chats.push({
-			userMsg,
-			gptMsg,
-		});
+const addNewChat = onRequest({ cors: true }, async (req, res) => {
+	const { topicId, userMsg } = req.body;
+	const topicRef = db.collection('topics').doc(topicId);
+	const topic = (await topicRef.get()).data();
+	const chats = topic.chats;
+	const messages = [];
+	chats.forEach((chat) => {
+		if (chat && chat.userMsg) messages.push({ role: 'user', content: chat.userMsg });
+		if (chat && chat.gptMsg) messages.push({ role: 'assistant', content: chat.gptMsg });
+	});
+	messages.push({
+		role: 'user',
+		content: userMsg,
+	});
+	messages.unshift({
+		role: 'system',
+		content: 'You are a helpful assistant.',
+	});
+	const getResponse = await openai.chat.completions.create({
+		model: 'gpt-3.5-turbo',
+		messages,
+	});
+	const gptMsg = getResponse.choices[0].message.content;
+	chats.push({
+		userMsg,
+		gptMsg,
+	});
 
-		db.collection('topics')
-			.doc(topicId)
-			.update(
-				{
-					chats,
-					updatedAt: new Date().toISOString(),
-				},
-				{ merge: true }
-			)
-			.then(() => {
-				res.send({ userMsg, gptMsg });
-			})
-			.catch((err) => {
-				res.send(err);
-			});
-	},
-	{ cors: true }
-);
+	await topicRef.update(
+		{
+			chats,
+			updatedAt: new Date().toISOString(),
+		},
+		{ merge: true }
+	);
+
+	topicRef
+		.get()
+		.then((doc) => {
+			res.send({ id: topicId, ...doc.data() });
+		})
+		.catch((err) => {
+			console.error(err);
+		});
+});
 
 module.exports = {
 	getAllTopics,
-	getTopic,
 	addNewTopic,
 	addNewChat,
 };

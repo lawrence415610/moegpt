@@ -58,7 +58,7 @@ const SignupPage = () => {
 			});
 			setEmail('');
 			setPassword('');
-			navigate('/');
+			navigate('/', { replace: true });
 		} catch (err) {
 			toast.error(err.response.data);
 			throw new Error('Error happens when trying to signup, Error Msg: ' + err);
