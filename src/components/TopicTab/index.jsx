@@ -6,7 +6,7 @@ import { RiDeleteBin6Line } from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
 import { editTopicNameApi } from '../../apis';
 
-const ChatTab = ({ id, name }) => {
+const TopicTab = ({ id, name }) => {
 	const [isEdit, setIsEdit] = useState(false);
 	const [isDelete, setIsDelete] = useState(false);
 	const [titleText, setTitleText] = useState(name);
@@ -82,9 +82,9 @@ const ChatTab = ({ id, name }) => {
 	);
 };
 
-ChatTab.propTypes = {
+TopicTab.propTypes = {
 	id: PropTypes.string.isRequired,
 	name: PropTypes.string.isRequired,
 };
 
-export default ChatTab;
+export default TopicTab;

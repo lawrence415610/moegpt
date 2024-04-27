@@ -1,15 +1,15 @@
 // import { useEffect } from 'react';
 import Logo from '/logo.png';
-import ChatContext from '../context/chat';
+import ChatContext from '../context/topic';
 import { toast } from 'react-toastify';
-import { createNewTopicApi } from '../apis';
-import { getChatsApi } from '../apis';
+import { addNewTopicApi, getAllTopicsApi } from '../apis';
 import { useNavigate } from 'react-router-dom';
 import UserMessageForm from '../components/UserMessageForm';
 import { useState } from 'react';
 import { auth } from '../firebase/index';
+import { useEffect } from 'react';
 const HomePage = () => {
-	const { dispatch: chatDispatch } = ChatContext();
+	const { dispatch } = ChatContext();
 	const navigate = useNavigate();
 	const user = auth.currentUser;
 	const userId = user.uid;
@@ -20,32 +20,28 @@ const HomePage = () => {
 		const inputText = e.target[0].value;
 		if (!inputText) return;
 		setLoading(true);
-		createNewTopicApi(inputText, user._id)
+		addNewTopicApi(inputText, userId)
 			.then((res) => {
-				if (res.id) {
-					getChatsApi(userId).then((res) => {
-						chatDispatch({
-							type: 'GET_CHATS',
-							payload: res,
-						});
-					});
-				}
+				dispatch({
+					type: 'ADD_TOPIC',
+					payload: res,
+				});
 				setLoading(false);
-				navigate(`/chats/${res.id}`, { replace: true });
+				navigate(`/topics/${res.id}`, { replace: true });
 			})
 			.catch((err) => {
 				toast.error(err);
 			});
 	};
 
-	// useEffect(() => {
-	// 	getChatsApi(userId).then((res) => {
-	// 		chatDispatch({
-	// 			type: 'GET_CHATS',
-	// 			payload: res,
-	// 		});
-	// 	});
-	// }, [chatDispatch, userId]);
+	useEffect(() => {
+		getAllTopicsApi(userId).then((res) => {
+			dispatch({
+				type: 'GET_TOPICS',
+				payload: res,
+			});
+		});
+	}, [dispatch, userId]);
 
 	return (
 		<>

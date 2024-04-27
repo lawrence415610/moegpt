@@ -1,61 +1,14 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:5555/api';
+const baseUrl = 'http://localhost:5001/moegpt-bb23f/us-central1';
 
-// const baseUrl = 'http://ec2-52-91-173-125.compute-1.amazonaws.com:5555/api';
 axios.defaults.baseURL = baseUrl;
-axios.defaults.withCredentials = true;
-
-// Auth features
-
-export const getCurrentUserApi = async () => {
-	try {
-		const { data } = await axios.get('/current-user');
-		return data;
-	} catch (err) {
-		console.log('error happened when trying to get current user, Error Msg: ', err);
-	}
-};
-
-export const loginApi = async ({ email, password }) => {
-	try {
-		const { data } = await axios.post('/login', {
-			email,
-			password,
-		});
-		return data;
-	} catch (err) {
-		console.log('error happened when trying to login, Error Msg: ', err);
-	}
-};
-
-export const signupApi = async ({ email, password }) => {
-	try {
-		const { data } = await axios.post('/signup', {
-			email,
-			password,
-			username: email.split('@')[0],
-		});
-		return data;
-	} catch (err) {
-		console.log('error happened when trying to signup, Error Msg: ', err);
-	}
-};
-
-export const logoutApi = async () => {
-	try {
-		const { data } = await axios.get('/logout');
-		return data;
-	} catch (err) {
-		console.log('error happened when trying to logout, Error Msg: ', err);
-	}
-};
 
 // chat features
-export const createNewTopicApi = async (message, userId) => {
+export const addNewTopicApi = async (userMsg, userId) => {
 	try {
-		const { data } = await axios.post('/create-new-topic', {
-			message,
+		const { data } = await axios.post('/addNewTopic', {
+			userMsg,
 			userId,
 		});
 		return data;
@@ -76,9 +29,9 @@ export const addNewChat = async (message, chatsId) => {
 	}
 };
 
-export const getChatsApi = async (userId) => {
+export const getAllTopicsApi = async (userId) => {
 	try {
-		const { data } = await axios.get('/chats', {
+		const { data } = await axios.get('/getAllTopics', {
 			params: { userId },
 		});
 		return data;
@@ -120,5 +73,14 @@ export const uploadAvatarApi = async ({ image, email }) => {
 		return { data, status };
 	} catch (err) {
 		console.log('error happened when trying to upload avatar, Error Msg: ', err);
+	}
+};
+
+export const logoutApi = async () => {
+	try {
+		const { data } = await axios.get('/logout');
+		return data;
+	} catch (err) {
+		console.log('error happened when trying to logout, Error Msg: ', err);
 	}
 };

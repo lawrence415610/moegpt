@@ -3,9 +3,9 @@ import { toast } from 'react-toastify';
 import Logo from '/logo.png';
 import { GoGear } from 'react-icons/go';
 import { MdOutlineLogout } from 'react-icons/md';
-import ChatTab from '../components/ChatTab';
+import TopicTab from '../components/TopicTab';
 import Avatar from '../components/Avatar';
-import ChatContext from '../context/chat';
+import topicContext from '../context/topic';
 import { logoutApi } from '../apis';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -21,8 +21,8 @@ const MainLayout = () => {
 	const [showSetting, setShowSetting] = useState(false);
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 	const user = auth.currentUser;
-	const { state: chatState } = ChatContext();
-	const { chats } = chatState;
+	const { state } = topicContext();
+	const { topics } = state;
 	const navigate = useNavigate();
 
 	const toolboxHandler = () => {
@@ -65,26 +65,28 @@ const MainLayout = () => {
 		return diffDays <= days;
 	};
 
-	const filterTodayChats = (chats) => {
+	const filterTodaytopics = (topics) => {
 		const startOfToday = new Date();
 		startOfToday.setHours(0, 0, 0, 0);
-		return chats.filter((chat) => new Date(chat.createdAt) >= startOfToday);
+		return topics.filter((topic) => new Date(topic.createdAt) >= startOfToday);
 	};
 
-	const filterPrevious7DaysChats = (chats) => {
-		return chats.filter(
-			(chat) => isWithinLastNDays(chat.createdAt, 7) && !isWithinLastNDays(chat.createdAt, 1)
+	const filterPrevious7Daystopics = (topics) => {
+		return topics.filter(
+			(topic) =>
+				isWithinLastNDays(topic.createdAt, 7) && !isWithinLastNDays(topic.createdAt, 1)
 		);
 	};
 
-	const filterPrevious30DaysChats = (chats) => {
-		return chats.filter(
-			(chat) => isWithinLastNDays(chat.createdAt, 30) && !isWithinLastNDays(chat.createdAt, 7)
+	const filterPrevious30Daystopics = (topics) => {
+		return topics.filter(
+			(topic) =>
+				isWithinLastNDays(topic.createdAt, 30) && !isWithinLastNDays(topic.createdAt, 7)
 		);
 	};
 
-	const filterMoreThan30DaysChats = (chats) => {
-		return chats.filter((chat) => !isWithinLastNDays(chat.createdAt, 30));
+	const filterMoreThan30Daystopics = (topics) => {
+		return topics.filter((topic) => !isWithinLastNDays(topic.createdAt, 30));
 	};
 
 	return (
@@ -109,7 +111,7 @@ const MainLayout = () => {
 								<CgAddR
 									className="size-5"
 									data-tooltip-id="tooltip"
-									data-tooltip-content="Start a new chat here."
+									data-tooltip-content="Start a new topic here."
 								/>
 							</div>
 						</Link>
@@ -117,57 +119,57 @@ const MainLayout = () => {
 
 					<div className="flex flex-col gap-2">
 						{/* Today */}
-						{filterTodayChats(chats).length === 0 && null}
-						{filterTodayChats(chats).length !== 0 && (
+						{filterTodaytopics(topics).length === 0 && null}
+						{filterTodaytopics(topics).length !== 0 && (
 							<div className="overflow-y-auto mt-3">
 								<h3 className="h-9 pb-2 pt-3 px-2 text-dark-grey text-xs">Today</h3>
 								<ol>
-									{filterTodayChats(chats).map((chat) => (
-										<ChatTab key={chat._id} id={chat._id} name={chat.name} />
+									{filterTodaytopics(topics).map((topic) => (
+										<TopicTab key={topic.id} id={topic.id} name={topic.name} />
 									))}
 								</ol>
 							</div>
 						)}
 
 						{/* Previous 7 Days */}
-						{filterPrevious7DaysChats(chats).length === 0 && null}
-						{filterPrevious7DaysChats(chats).length !== 0 && (
+						{filterPrevious7Daystopics(topics).length === 0 && null}
+						{filterPrevious7Daystopics(topics).length !== 0 && (
 							<div className="overflow-y-auto mt-5">
 								<h3 className="h-9 pb-2 pt-3 px-2 text-dark-grey text-xs">
 									Previous 7 Days
 								</h3>
 								<ol>
-									{filterPrevious7DaysChats(chats).map((chat) => (
-										<ChatTab key={chat._id} id={chat._id} name={chat.name} />
+									{filterPrevious7Daystopics(topics).map((topic) => (
+										<TopicTab key={topic.id} id={topic.id} name={topic.name} />
 									))}
 								</ol>
 							</div>
 						)}
 						{/* Previous 30 Days */}
-						{filterPrevious30DaysChats(chats).length === 0 && null}
-						{filterPrevious30DaysChats(chats).length !== 0 && (
+						{filterPrevious30Daystopics(topics).length === 0 && null}
+						{filterPrevious30Daystopics(topics).length !== 0 && (
 							<div className="overflow-y-auto mt-5">
 								<h3 className="h-9 pb-2 pt-3 px-2 text-dark-grey text-xs">
 									Previous 30 Days
 								</h3>
 								<ol>
-									{filterPrevious30DaysChats(chats).map((chat) => (
-										<ChatTab key={chat._id} id={chat._id} name={chat.name} />
+									{filterPrevious30Daystopics(topics).map((topic) => (
+										<TopicTab key={topic.id} id={topic.id} name={topic.name} />
 									))}
 								</ol>
 							</div>
 						)}
 
 						{/* More Than 30 Days */}
-						{filterMoreThan30DaysChats(chats).length === 0 && null}
-						{filterMoreThan30DaysChats(chats).length !== 0 && (
+						{filterMoreThan30Daystopics(topics).length === 0 && null}
+						{filterMoreThan30Daystopics(topics).length !== 0 && (
 							<div className="overflow-y-auto mt-5">
 								<h3 className="h-9 pb-2 pt-3 px-2 text-dark-grey text-xs">
 									More Than 30 Days
 								</h3>
 								<ol>
-									{filterMoreThan30DaysChats(chats).map((chat) => (
-										<ChatTab key={chat._id} id={chat._id} name={chat.name} />
+									{filterMoreThan30Daystopics(topics).map((topic) => (
+										<TopicTab key={topic.id} id={topic.id} name={topic.name} />
 									))}
 								</ol>
 							</div>

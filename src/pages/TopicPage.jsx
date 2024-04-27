@@ -1,15 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Message from '../components/Message';
 import { toast } from 'react-toastify';
-import { addNewChat, getChatsApi } from '../apis';
-import ChatContext from '../context/chat';
+import { addNewChat } from '../apis';
+import TopicContext from '../context/topic';
 import { useParams } from 'react-router-dom';
 import UserMessageForm from '../components/UserMessageForm';
-import { auth } from '../firebase/index';
 const TopicPage = () => {
-	const { dispatch: chatDispatch } = ChatContext();
-	const user = auth.currentUser;
-	const userId = user._id;
+	const { dispatch } = TopicContext();
 	const id = useParams().id;
 	const [chatSessions, setChatSessions] = useState([]);
 	const [loading, setLoading] = useState(false);
@@ -21,7 +18,7 @@ const TopicPage = () => {
 		setLoading(true);
 		addNewChat(inputText, id)
 			.then((res) => {
-				chatDispatch({
+				dispatch({
 					type: 'ADD_CHAT',
 					payload: res,
 				});
@@ -32,17 +29,6 @@ const TopicPage = () => {
 				toast.error(err);
 			});
 	};
-
-	useEffect(() => {
-		getChatsApi(userId).then((res) => {
-			chatDispatch({
-				type: 'GET_CHATS',
-				payload: res,
-			});
-			const chatsContent = res.find((chat) => chat._id === id).chatsContent;
-			setChatSessions(chatsContent);
-		});
-	}, [id, chatDispatch, userId]);
 
 	return (
 		<>

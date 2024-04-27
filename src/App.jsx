@@ -1,4 +1,4 @@
-import { ChatProvider } from './context/chat';
+import { TopicProvider } from './context/topic';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-tooltip/dist/react-tooltip.css';
 import { ToastContainer } from 'react-toastify';
@@ -11,7 +11,7 @@ import MainLayout from './layouts/MainLayout';
 import TopicPage from './pages/TopicPage';
 function App() {
 	return (
-		<ChatProvider>
+		<TopicProvider>
 			<ToastContainer position="top-right" />
 			<Router>
 				<Routes>
@@ -25,7 +25,7 @@ function App() {
 					<Route path="/signup" element={<SignupPage />} />
 				</Routes>
 			</Router>
-		</ChatProvider>
+		</TopicProvider>
 	);
 }
 
