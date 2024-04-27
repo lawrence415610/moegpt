@@ -1,3 +1,4 @@
+require('dotenv').config({ path: './.env.local' });
 const OpenAI = require('openai');
 const { onRequest } = require('firebase-functions/v2/https');
 // The Firebase Admin SDK to access Firestore.
@@ -64,7 +65,52 @@ const addNewTopic = onRequest(async (req, res) => {
 		});
 });
 
+const addNewChat = onRequest(async (req, res) => {
+	const { topicId, userMsg } = req.body;
+	const topic = (await db.collection('topics').doc(topicId).get()).data();
+	const chats = topic.chats;
+	const messages = [];
+	chats.forEach((chat) => {
+		if (chat && chat.userMsg) messages.push({ role: 'user', content: chat.userMsg });
+		if (chat && chat.gptMsg) messages.push({ role: 'assistant', content: chat.gptMsg });
+	});
+	messages.push({
+		role: 'user',
+		content: userMsg,
+	});
+	messages.unshift({
+		role: 'system',
+		content: 'You are a helpful assistant.',
+	});
+	const getResponse = await openai.chat.completions.create({
+		model: 'gpt-3.5-turbo',
+		messages,
+	});
+	const gptMsg = getResponse.choices[0].message.content;
+	chats.push({
+		userMsg,
+		gptMsg,
+	});
+
+	db.collection('topics')
+		.doc(topicId)
+		.update(
+			{
+				chats,
+				updatedAt: new Date().toISOString(),
+			},
+			{ merge: true }
+		)
+		.then(() => {
+			res.send({ userMsg, gptMsg });
+		})
+		.catch((err) => {
+			res.send(err);
+		});
+});
+
 module.exports = {
 	getAllTopics,
 	addNewTopic,
+	addNewChat,
 };
