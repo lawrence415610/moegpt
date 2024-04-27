@@ -18,7 +18,7 @@ function App() {
 					<Route element={<RequireAuth />}>
 						<Route path="/" element={<MainLayout />}>
 							<Route path="/" element={<HomePage />} exact />
-							<Route path="/chats/:id" element={<TopicPage />} />
+							<Route path="/topics/:id" element={<TopicPage />} />
 						</Route>
 					</Route>
 					<Route path="/login" element={<LoginPage />} />

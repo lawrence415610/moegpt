@@ -40,6 +40,17 @@ export const getAllTopicsApi = async (userId) => {
 	}
 };
 
+export const getTopicApi = async (topicId) => {
+	try {
+		const { data } = await axios.get('/getTopic', {
+			params: { topicId },
+		});
+		return data;
+	} catch (err) {
+		console.log('error happened when trying to get topic, Error Msg: ', err);
+	}
+};
+
 export const editTopicNameApi = async (chatsId, name) => {
 	try {
 		const { data } = await axios.post('/update-topic-name', {

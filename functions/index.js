@@ -23,7 +23,20 @@ const getAllTopics = onRequest({ cors: true }, (req, res) => {
 			});
 			res.send(data);
 		})
-		.then((err) => {
+		.catch((err) => {
+			res.send(err);
+		});
+});
+
+const getTopic = onRequest({ cors: true }, (req, res) => {
+	const { topicId } = req.query;
+	db.collection('topics')
+		.doc(topicId)
+		.get()
+		.then((snapshot) => {
+			res.send({ ...snapshot.data(), id: snapshot.id });
+		})
+		.catch((err) => {
 			res.send(err);
 		});
 });
@@ -117,6 +130,7 @@ const addNewChat = onRequest(
 
 module.exports = {
 	getAllTopics,
+	getTopic,
 	addNewTopic,
 	addNewChat,
 };

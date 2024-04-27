@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Message from '../components/Message';
 import { toast } from 'react-toastify';
 import { addNewChat } from '../apis';
 import TopicContext from '../context/topic';
 import { useParams } from 'react-router-dom';
 import UserMessageForm from '../components/UserMessageForm';
+import { getTopicApi } from '../apis';
+
 const TopicPage = () => {
 	const { dispatch } = TopicContext();
 	const id = useParams().id;
@@ -29,6 +31,16 @@ const TopicPage = () => {
 				toast.error(err);
 			});
 	};
+
+	useEffect(() => {
+		getTopicApi(id)
+			.then((res) => {
+				setChatSessions(res.chats);
+			})
+			.catch((err) => {
+				toast.error(err);
+			});
+	});
 
 	return (
 		<>

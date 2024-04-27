@@ -68,25 +68,25 @@ const MainLayout = () => {
 	const filterTodaytopics = (topics) => {
 		const startOfToday = new Date();
 		startOfToday.setHours(0, 0, 0, 0);
-		return topics.filter((topic) => new Date(topic.createdAt) >= startOfToday);
+		return topics.filter((topic) => new Date(topic.updatedAt) >= startOfToday);
 	};
 
 	const filterPrevious7Daystopics = (topics) => {
 		return topics.filter(
 			(topic) =>
-				isWithinLastNDays(topic.createdAt, 7) && !isWithinLastNDays(topic.createdAt, 1)
+				isWithinLastNDays(topic.updatedAt, 7) && !isWithinLastNDays(topic.updatedAt, 1)
 		);
 	};
 
 	const filterPrevious30Daystopics = (topics) => {
 		return topics.filter(
 			(topic) =>
-				isWithinLastNDays(topic.createdAt, 30) && !isWithinLastNDays(topic.createdAt, 7)
+				isWithinLastNDays(topic.updatedAt, 30) && !isWithinLastNDays(topic.updatedAt, 7)
 		);
 	};
 
 	const filterMoreThan30Daystopics = (topics) => {
-		return topics.filter((topic) => !isWithinLastNDays(topic.createdAt, 30));
+		return topics.filter((topic) => !isWithinLastNDays(topic.updatedAt, 30));
 	};
 
 	return (

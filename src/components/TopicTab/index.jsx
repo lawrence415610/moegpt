@@ -48,7 +48,7 @@ const TopicTab = ({ id, name }) => {
 								isActive ? 'text-emerald-500 font-semibold' : ''
 							} `
 						}
-						to={`chats/${id}`}
+						to={`topics/${id}`}
 					>
 						<div className="grow border-2 border-transparent">{titleText}</div>
 					</NavLink>
