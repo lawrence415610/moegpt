@@ -120,9 +120,17 @@ const updateTopicName = onRequest({ cors: true }, async (req, res) => {
 	res.send({ name });
 });
 
+const deleteTopic = onRequest({ cors: true }, async (req, res) => {
+	const { topicId } = req.query;
+	const topicRef = db.collection('topics').doc(topicId);
+	await topicRef.delete();
+	res.send({ ok: true });
+});
+
 module.exports = {
 	getAllTopics,
 	addNewTopic,
 	addNewChat,
 	updateTopicName,
+	deleteTopic,
 };

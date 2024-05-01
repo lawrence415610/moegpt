@@ -1,25 +1,26 @@
 import PropTypes from 'prop-types';
 import Modal from '../Modal';
-// import { deleteTopicApi, getChatsApi } from '../../apis';
+import { deleteTopicApi, getAllTopicsApi } from '../../apis';
 import { useNavigate } from 'react-router-dom';
-// import { auth } from '../../firebase/index';
-
+import { auth } from '../../firebase/index';
+import TopicContext from '../../context/topic';
 const DeleteModal = ({ id, titleText, closeModal }) => {
 	const navigate = useNavigate();
-	// const user = auth.currentUser;
-	// const userId = user.uid;
+	const user = auth.currentUser;
+	const userId = user.uid;
+	const { dispatch } = TopicContext();
 	const deleteHandler = async () => {
-		// const res = await deleteTopicApi(id);
-		// if (res.ok) {
-		// 	getChatsApi(userId).then((res) => {
-		// 		dispatch({
-		// 			type: 'GET_CHATS',
-		// 			payload: res,
-		// 		});
-		// 	});
-		// }
-		// closeModal();
-		if (window.location.pathname === `/chats/${id}`) navigate('/');
+		const res = await deleteTopicApi(id);
+		if (res.ok) {
+			getAllTopicsApi(userId).then((res) => {
+				dispatch({
+					type: 'GET_TOPICS',
+					payload: res,
+				});
+			});
+		}
+		closeModal();
+		if (window.location.pathname === `/topics/${id}`) navigate('/');
 	};
 	return (
 		<Modal title="Delete chat?" closeModal={() => closeModal()}>

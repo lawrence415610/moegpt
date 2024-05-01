@@ -52,10 +52,10 @@ export const editTopicNameApi = async (topicId, name) => {
 	}
 };
 
-export const deleteTopicApi = async (chatsId) => {
+export const deleteTopicApi = async (topicId) => {
 	try {
-		const { data } = await axios.delete('/delete-topic', {
-			params: { chatsId },
+		const { data } = await axios.delete('/deleteTopic', {
+			params: { topicId },
 		});
 		return data;
 	} catch (err) {
