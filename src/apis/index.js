@@ -40,10 +40,10 @@ export const getAllTopicsApi = async (userId) => {
 	}
 };
 
-export const editTopicNameApi = async (chatsId, name) => {
+export const editTopicNameApi = async (topicId, name) => {
 	try {
-		const { data } = await axios.post('/update-topic-name', {
-			chatsId,
+		const { data } = await axios.post('/updateTopicName', {
+			topicId,
 			name,
 		});
 		return data;

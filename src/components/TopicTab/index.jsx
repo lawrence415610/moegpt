@@ -23,8 +23,8 @@ const TopicTab = ({ id, name }) => {
 	};
 
 	const submitTitleChange = async () => {
-		const newTitle = await editTopicNameApi(id, titleText);
-		setTitleText(newTitle);
+		const { name } = await editTopicNameApi(id, titleText);
+		setTitleText(name);
 		setIsEdit(false);
 	};
 

@@ -113,8 +113,16 @@ const addNewChat = onRequest({ cors: true }, async (req, res) => {
 		});
 });
 
+const updateTopicName = onRequest({ cors: true }, async (req, res) => {
+	const { topicId, name } = req.body;
+	const topicRef = db.collection('topics').doc(topicId);
+	await topicRef.update({ name });
+	res.send({ name });
+});
+
 module.exports = {
 	getAllTopics,
 	addNewTopic,
 	addNewChat,
+	updateTopicName,
 };
