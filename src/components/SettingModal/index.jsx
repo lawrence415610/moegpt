@@ -3,10 +3,10 @@ import AvatarEditor from 'react-avatar-editor';
 import Dropzone from 'react-dropzone';
 import PropTypes from 'prop-types';
 import Modal from '../Modal';
-import { uploadAvatarApi } from '../../apis';
-import { toast } from 'react-toastify';
 import { GoGear } from 'react-icons/go';
-import { auth } from '../../firebase/index';
+import { auth, storage } from '../../firebase/index';
+import { uploadString, ref, getDownloadURL } from 'firebase/storage';
+import { updateProfile } from 'firebase/auth';
 
 const SettingModal = ({ closeModal }) => {
 	const [image, setImage] = useState(null);
@@ -31,29 +31,18 @@ const SettingModal = ({ closeModal }) => {
 	};
 
 	const onSave = async () => {
+		const user = auth.currentUser;
+		const storageRef = ref(storage, `avatars/${user.uid}`);
 		if (editor) {
 			try {
 				const canvas = editor.getImageScaledToCanvas();
 				const base64Img = canvas.toDataURL();
-				const { data, status } = await uploadAvatarApi({
-					image: base64Img,
-					email: auth.currentUser.email,
-				});
-
-				if (status === 200) {
-					const user = JSON.parse(window.localStorage.getItem('user'));
-					window.localStorage.setItem(
-						'user',
-						JSON.stringify({ ...user, avatar: data.avatar })
-					);
-
-					toast.success('Upload successfully!');
-				} else {
-					toast.error('Upload failed');
-				}
+				await uploadString(storageRef, base64Img, 'data_url');
+				const url = await getDownloadURL(storageRef);
+				await updateProfile(user, { photoURL: url });
 				closeModal();
 			} catch (err) {
-				toast.error(err.response.data);
+				console.error(err);
 			}
 		}
 	};

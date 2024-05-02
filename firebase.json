@@ -24,7 +24,11 @@
 		"ui": {
 			"enabled": true
 		},
-		"singleProjectMode": true
+		"singleProjectMode": true,
+		"storage": {
+			"port": 9199,
+			"rules": "storage.rules"
+		}
 	},
 	"hosting": {
 		"source": ".",
@@ -32,5 +36,8 @@
 		"frameworksBackend": {
 			"region": "asia-east1"
 		}
+	},
+	"storage": {
+		"rules": "storage.rules"
 	}
 }

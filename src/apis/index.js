@@ -63,19 +63,6 @@ export const deleteTopicApi = async (topicId) => {
 	}
 };
 
-// settings
-export const uploadAvatarApi = async ({ image, email }) => {
-	try {
-		const { data, status } = await axios.post('/upload-avatar', {
-			image,
-			email,
-		});
-		return { data, status };
-	} catch (err) {
-		console.log('error happened when trying to upload avatar, Error Msg: ', err);
-	}
-};
-
 export const logoutApi = async () => {
 	try {
 		const { data } = await axios.get('/logout');
