@@ -6,7 +6,6 @@ import { MdOutlineLogout } from 'react-icons/md';
 import TopicTab from '../components/TopicTab';
 import Avatar from '../components/Avatar';
 import topicContext from '../context/topic';
-import { logoutApi } from '../apis';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import SettingModal from '../components/SettingModal';
@@ -15,7 +14,7 @@ import { TbLayoutSidebarLeftExpandFilled } from 'react-icons/tb';
 import { CgAddR } from 'react-icons/cg';
 import { Tooltip } from 'react-tooltip';
 import { auth } from '../firebase/index';
-
+import { signOut } from 'firebase/auth';
 const MainLayout = () => {
 	const [toolbox, setToolbox] = useState(false);
 	const [showSetting, setShowSetting] = useState(false);
@@ -41,16 +40,13 @@ const MainLayout = () => {
 
 	const logoutHandler = async () => {
 		try {
-			const data = await logoutApi();
-			if (data.ok) {
+			signOut(auth).then(() => {
+				navigate('/login', { replace: true });
 				toast.success('User successfully Logged out.');
-			} else {
-				toast.error('Error happened while sending logout request.');
-			}
+			});
 		} catch (err) {
+			console.error(err);
 			toast.error(err);
-		} finally {
-			navigate('/login', { replace: true });
 		}
 	};
 

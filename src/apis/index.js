@@ -62,12 +62,3 @@ export const deleteTopicApi = async (topicId) => {
 		console.log('error happened when trying to delete topic, Error Msg: ', err);
 	}
 };
-
-export const logoutApi = async () => {
-	try {
-		const { data } = await axios.get('/logout');
-		return data;
-	} catch (err) {
-		console.log('error happened when trying to logout, Error Msg: ', err);
-	}
-};

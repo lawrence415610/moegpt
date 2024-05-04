@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { auth } from '../firebase/index';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 const SignupPage = () => {
-	const navigate = useNavigate();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
@@ -58,7 +56,7 @@ const SignupPage = () => {
 			});
 			setEmail('');
 			setPassword('');
-			navigate('/', { replace: true });
+			window.location.replace(location.origin);
 		} catch (err) {
 			toast.error(err.response.data);
 			throw new Error('Error happens when trying to signup, Error Msg: ' + err);
