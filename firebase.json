@@ -31,8 +31,8 @@
 		}
 	},
 	"hosting": {
-		"source": "./dist",
-		"ignore": [],
+		"public": "dist",
+		"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
 		"frameworksBackend": {
 			"region": "asia-east1"
 		}
