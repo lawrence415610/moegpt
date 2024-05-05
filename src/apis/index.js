@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:5001/moegpt-bb23f/us-central1';
+const baseUrl = 'https://moegpt-bb23f.web.app/moegpt-bb23f/us-central1';
 
 axios.defaults.baseURL = baseUrl;
 
